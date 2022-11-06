@@ -4,12 +4,9 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -22,9 +19,8 @@ const theme = createTheme();
 
 const SignUp = () => {
     const [isError, setIsError] = useState(false);
-    const { registerFormState, setRegisterFormState, setToken, setIsAuthenticated } = useAuthContext();
+    const { setEmployee, setToken, setIsAuthenticated } = useAuthContext();
     const navigate = useNavigate();
-
 
     const handleSubmit = async (e) => {
         try {
@@ -33,7 +29,7 @@ const SignUp = () => {
             const response = await register({
                 firstName: formData.get('firstName'),
                 lastName: formData.get('lastName'),
-                username: formData.get('username'),
+                userName: formData.get('userName'),
                 email: formData.get('email'),
                 address: formData.get('address'),
                 role: formData.get('role'),
@@ -41,7 +37,8 @@ const SignUp = () => {
             });
             localStorage.setItem("token", response.data.token);
             setToken( response.data.token);
-            setIsAuthenticated(true);
+            // setIsAuthenticated(true);
+            // setEmployee((prev) => [...prev, response]);
             navigate('/login', { replace: true });
         }
         catch (error) {
@@ -62,9 +59,6 @@ const SignUp = () => {
                         alignItems: 'center',
                     }}
                 >
-                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
-                        <LockOutlinedIcon />
-                    </Avatar>
                     <Typography component="h1" variant="h5">
                         Sign up
                     </Typography>
@@ -94,11 +88,11 @@ const SignUp = () => {
                             <Grid item xs={12}>
                                 <TextField
                                     fullWidth
-                                    name="username"
-                                    label="username"
+                                    name="userName"
+                                    label="userName"
                                     type="text"
-                                    id="username"
-                                    autoComplete="new-username"
+                                    id="userName"
+                                    autoComplete="new-userName"
                                 />
                             </Grid>
                             <Grid item xs={12}>
