@@ -6,7 +6,7 @@ import Home from './components/Home';
 import ProtectedLayout from './components/ProtectedRoute';
 import GlobalLayout from './components/GlobalLayout';
 import { useAuthContext } from './context/AuthContext';
-
+import Navbar from './components/Navbar'
 import { useNavigate } from "react-router-dom";
 function App() {
   const { setUser, setToken, isAuthenticated, setIsAuthenticated, posts } = useAuthContext();
@@ -20,12 +20,15 @@ function App() {
     navigate('/', { replace: true });
   };
   return (
-    <div className="App">
+    <div>
+      <Navbar isAuthenticated={isAuthenticated}
+        setToken={setToken} logout={logout} />
       <Routes>
         <Route path="/" element={<GlobalLayout />} >
-          <Route index element={<Home />} />
+          <Route index element={<SignUp />} />
+          <Route path="/home" element={<Home />} />
           <Route path="/login" element={<SignIn />} />
-          <Route path="/register" element={<SignUp />} />
+          <Route index path="/register" element={<SignUp />} />
         </Route>
       </Routes>
     </div>

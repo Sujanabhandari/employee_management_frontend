@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { createContext, useState, useContext } from "react";
-
+import axios from 'axios';
 import {
   getFromLocalStorage,
   getUserContext,
@@ -12,17 +12,16 @@ const AuthContext = createContext();
 const AuthContextProvider = ({ children }) => {
   // get token from local storage if exists
   const [token, setToken] = useState(localStorage.getItem("token") || null);
-  const [user, setUser] = useState(null);
+  // const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  const [registerFormState, setRegisterFormState] = useState({
+  const [employee, setEmployee] = useState();
+  const [user, setUser] = useState({
     firstName: "",
     lastName: "",
     username: "",
     email: "",
     address: "",
     role: "",
-    password: "",
     profile_pic: null,
   });
 
@@ -44,14 +43,29 @@ const AuthContextProvider = ({ children }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]); 
 
+  
+  useEffect(() => {
+    const getEmployee = async () => {
+      try {
+        const { data } = await axios.get(`http://localhost:3000/users`);
+        setEmployee(data);
+      } catch (error) {
+        console.log(error)
+      }
+    };
+    getEmployee();
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
-        registerFormState,
-        setRegisterFormState,
+        user,
+        setUser,
         setToken,
-        isAuthenticated,setUser,
-        setIsAuthenticated
+        isAuthenticated,
+        setIsAuthenticated,
+        employee,
+        setEmployee
       }}
     >
       {children}

@@ -14,14 +14,14 @@ import Container from '@mui/material/Container';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useAuthContext } from "../context/AuthContext";
 import { useState } from 'react';
-import { loginUser } from '../utils/auth';
+import { loginUser, getUserContext} from '../utils/auth';
 import { useNavigate } from "react-router-dom";
 
 const theme = createTheme();
 
 export default function SignIn() {
 
-  const { setIsAuthenticated, setToken} = useAuthContext();
+  const { setIsAuthenticated, setToken, user, setUser,} = useAuthContext();
   const [isError, setIsError] = useState(false);
   const navigate = useNavigate();
   
@@ -31,11 +31,15 @@ export default function SignIn() {
       const data = new FormData(event.currentTarget);
       if (!data.get('email') || !data.get('email')) alert("Please fill out all the fields");
       const response = await loginUser({ email: data.get('email'), password: data.get('password') });
-      console.log(response);
-      localStorage.setItem("token", response.data.token);
-      setToken(response.data.token);
-      setIsAuthenticated(true);
-      navigate('/', { replace: true });
+      const token = response.data.token;
+      if(token){
+        setUser(getUserContext);
+        console.log(user);
+        localStorage.setItem("token", response.data.token);
+        setToken(response.data.token);
+        setIsAuthenticated(true);
+        navigate('/home', { replace: true });
+      }
 
     } catch (error) {
       console.log("From Error", error)
