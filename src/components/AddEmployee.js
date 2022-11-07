@@ -14,7 +14,7 @@ import axios from 'axios';
 
 const AddEmployee = () => {
     const navigate = useNavigate();
-    const { setEmployee } = useAuthContext();
+    const { setEmployees } = useAuthContext();
     const [array, setArray] = useState([]);
 
     const handleSubmit = async (e) => {
@@ -33,8 +33,8 @@ const AddEmployee = () => {
                 }]
             });
             console.log(response);
-            setEmployee((prev) => [...prev, response]);
-            navigate('/', { replace: true });
+            setEmployees((prev) => [...prev, response]);
+            // navigate('/', { replace: true });
         } catch (error) {
             console.log(error)
         }

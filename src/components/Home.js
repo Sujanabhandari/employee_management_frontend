@@ -7,8 +7,7 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import { useNavigate } from "react-router-dom";
 const Home = () => {
-  const { user, employee, isAuthenticated } = useAuthContext();
-  console.log("Employee List", employee);
+  const { user, employees, isAuthenticated } = useAuthContext();
   const navigate = useNavigate();
   
   // useEffect(() => {
@@ -16,7 +15,7 @@ const Home = () => {
   // }, [isAuthenticated]);
 
   return (
-    <Container maxWidth="sm">
+    <Container>
       <Employees />
     </Container>
   );

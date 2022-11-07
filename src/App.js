@@ -14,13 +14,13 @@ import Employee from './components/Employees';
 import EditEmployee from './components/EditEmployee';
 import CsvUpload from './components/CsvUpload';
 function App() {
-  const { setUser, setToken, isAuthenticated, setIsAuthenticated,setEmployee,token } = useAuthContext();
+  const { setUser, setToken, isAuthenticated, setIsAuthenticated,setEmployees,token } = useAuthContext();
   const navigate = useNavigate();
 
   const logout = (event) => {
     event.preventDefault();
     localStorage.removeItem("token");
-    setEmployee([]);
+    setEmployees([]);
     setIsAuthenticated(false);
     setToken(null);
     setUser(null);

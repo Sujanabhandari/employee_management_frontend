@@ -12,7 +12,7 @@ const AuthContext = createContext();
 const AuthContextProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [employee, setEmployee] = useState([]);
+  const [employees, setEmployees] = useState([]);
   const [user, setUser] = useState({
     firstName: "",
     lastName: "",
@@ -47,7 +47,7 @@ const AuthContextProvider = ({ children }) => {
       if(!isAuthenticated) return ;
       try {
           const { data } = await axios.get(`http://localhost:3000/users`);
-          setEmployee(data);
+          setEmployees(data);
       } catch (error) {
         console.log(error)
       }
@@ -63,8 +63,8 @@ const AuthContextProvider = ({ children }) => {
         setToken,
         isAuthenticated,
         setIsAuthenticated,
-        employee,
-        setEmployee, 
+        employees,
+        setEmployees, 
         // open, setOpen, handleOpen, handleClose
       }}
     >

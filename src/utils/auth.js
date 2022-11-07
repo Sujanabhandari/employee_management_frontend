@@ -13,6 +13,14 @@ const postData = async (url, userData) => {
 
   return response;
 };
+
+const putData = async (url, userData) => {
+  const response = await axios.put(url, userData , {
+    headers: { Authorization: localStorage.getItem("token") }
+  });
+  return response;
+};
+
 const loginUser = async (userData) => {
   try {
     const response = await axios.post(
@@ -57,6 +65,6 @@ export {
   getFromLocalStorage,
   saveToLocalStorage,
   removeFromLocalStorage,
-  postData
-  // deleteEmployee
+  postData,
+  putData
 };
