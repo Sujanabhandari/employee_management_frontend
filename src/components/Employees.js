@@ -10,58 +10,96 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import axios from "axios";
 import { Link } from "react-router-dom";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import ListItemText from '@mui/material/ListItemText';
+import Box from '@mui/material/Box';
+import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { Stack } from "@mui/system";
+import { deleteEmployee } from "../utils/deleteEmployee";
 
 function Employee() {
-    const { user,
-        setUser,
-        setToken,
-        isAuthenticated,
-        setIsAuthenticated,
-        employee,
-        setEmployee } = useAuthContext();
+    const { employee, setEmployee } = useAuthContext();
+    const columns = [
+        {
+            field: 'sn',
+            headerName: 'SN',
+            width: 90,
+            filterable: false,
+            renderCell: (params) => params.api.getRowIndex(params.row._id) + 1
+        },
+        {
+            field: 'firstName',
+            headerName: 'First name',
+            width: 140,
+            editable: true,
+        },
+        {
+            field: 'lastName',
+            headerName: 'Last name',
+            width: 140,
+            editable: true,
+        },
+        {
+            field: 'email',
+            headerName: 'Email',
+            width: 140,
+            editable: true,
+        },
+        {
+            field: 'userName',
+            headerName: 'UserName',
+            width: 140,
+            editable: true,
+        },
+        {
+            field: 'address',
+            headerName: 'Address',
+            width: 140,
+            editable: true,
+        },
+        {
+            field: 'role',
+            headerName: 'Role',
+            type: 'number',
+            width: 140,
+            editable: true,
+        },
+        {
+            field: 'actions',
+            headerName: 'Actions',
+            width: 200,
+            filterable: false,
+            renderCell: (params) => {
+                const onClick = async (e) => {
+                    const currentRow = params.row;
+                    const deleteRow = await deleteEmployee(e, currentRow._id);
+                    setEmployee(current => current.filter(emp => emp._id !== currentRow._id));
+                };
 
+                return (
+                    <Stack direction="row" spacing={2}>
+                        <Button variant="outlined" color="primary" size="small" onClick={onClick}>Edit</Button>
+                        <Button variant="outlined" color="error" size="small" onClick={onClick}>Delete</Button>
+                    </Stack>
+                );
+            },
+        }
+    ];
     return (
-        <Grid
-            align="center"
-            alignItems="center"
-            justify="center"
-        >
-            <Grid style={{ margin: 20 }}>
-                {employee.length>0? <Typography variant="h4">
-                    <strong>Employee Information</strong>
-                </Typography>: "" }
-            </Grid>
-            <Grid container item xs={12} spacing={2} alignItems="center" justify="center">
-                {employee?.map((employee, index) => (
-                    <Grid container item sm={12} key={index}>
-                        <Link to={`/employee/${employee._id}`}>
-                        <Card sx={{ maxWidth: 345 }}>
-                            <CardMedia
-                                component="img"
-                                height="140"
-                                image="/static/images/cards/contemplative-reptile.jpg"
-                                alt="green iguana"
-                            />
-                            <CardContent>
-                                <Typography gutterBottom variant="h5" component="div">
-                                    Name {employee.userName}
-                                </Typography>
-                                <Typography variant="body2" color="text.secondary">
-                                    Role:{employee.role} email:{employee.role}
-                                    {employee.userName}
-                                </Typography>
-                            </CardContent>
-                            <CardActions>
-                                <Button size="small">Edit</Button>
-                                <Button size="small">Delete</Button>
-                            </CardActions>
-                        </Card>
-                        </Link>
-                    </Grid>
-                ))}
-
-            </Grid>
-        </Grid>
+        <>
+            <Box sx={{ height: 650, width: '100%' }}>
+                <DataGrid
+                    rows={employee}
+                    columns={columns}
+                    pageSize={10}
+                    getRowId={(row, index) => row._id}
+                    experimentalFeatures={{ newEditingApi: true }}
+                />
+            </Box>
+        </>
     );
 }
 
