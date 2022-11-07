@@ -19,9 +19,27 @@ import Box from '@mui/material/Box';
 import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { Stack } from "@mui/system";
 import { deleteEmployee } from "../utils/deleteEmployee";
+import EditEmployee from "./EditEmployee";
+import Modal from '@mui/material/Modal';
+
+const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+};
+
 
 function Employee() {
-    const { employee, setEmployee } = useAuthContext();
+    const { employees, setEmployees } = useAuthContext();
+    const [modalShow, setModalShow] = useState(false);
+    const [currentEmployee, setCurrentEmployee]  = useState({});
+
     const columns = [
         {
             field: 'sn',
@@ -73,30 +91,39 @@ function Employee() {
             width: 200,
             filterable: false,
             renderCell: (params) => {
-                const onClick = async (e) => {
+                const deleteClick = async (e) => {
                     const currentRow = params.row;
                     const deleteRow = await deleteEmployee(e, currentRow._id);
-                    setEmployee(current => current.filter(emp => emp._id !== currentRow._id));
+                    setEmployees(current => current.filter(emp => emp._id !== currentRow._id));
                 };
-
+                
                 return (
                     <Stack direction="row" spacing={2}>
-                        <Button variant="outlined" color="primary" size="small" onClick={onClick}>Edit</Button>
-                        <Button variant="outlined" color="error" size="small" onClick={onClick}>Delete</Button>
+                        <Button variant="outlined" color="primary" size="small"
+                            onClick={() => {
+                                setCurrentEmployee(params.row);
+                                setModalShow(true);
+                            }} >
+                            Edit</Button>
+                        <Button variant="outlined" color="error" size="small" onClick={deleteClick}>Delete</Button>
                     </Stack>
                 );
             },
         }
     ];
+
     return (
         <>
             <Box sx={{ height: 650, width: '100%' }}>
                 <DataGrid
-                    rows={employee}
+                    rows={employees}
                     columns={columns}
                     pageSize={10}
                     getRowId={(row, index) => row._id}
                     experimentalFeatures={{ newEditingApi: true }}
+                />
+                <EditEmployee employee={currentEmployee} show={modalShow}
+                    onHide={() => setModalShow(false)}
                 />
             </Box>
         </>

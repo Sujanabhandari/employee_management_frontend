@@ -15,6 +15,7 @@ import EditEmployee from "./EditEmployee";
 
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
+import { deleteEmployee } from "../utils/deleteEmployee";
 
 const style = {
     position: 'absolute',
@@ -29,13 +30,13 @@ const style = {
 };
 
 function SingleEmployee() {
-    const { employee, setEmployee } = useAuthContext();
+    const { employees, setEmployees } = useAuthContext();
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
     const { id } = useParams();
 
-    const clickedEmployee = employee?.filter((employee) => employee?._id == id);
+    const clickedEmployee = employees?.filter((employee) => employee?._id == id);
     const resultId = clickedEmployee[0]?._id;
     console.log(resultId)
     const navigate = useNavigate();
@@ -49,7 +50,6 @@ function SingleEmployee() {
                     headers: { 'Authorization': `${localStorage.getItem("token")}` }
                 }
             );
-            // setEmployee((prev) => [...prev, data]);
             navigate('/home', { replace: true });
         } catch (error) {
             console.log(error)

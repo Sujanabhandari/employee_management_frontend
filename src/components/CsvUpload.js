@@ -23,7 +23,7 @@ function CsvUpload() {
     const [file, setFile] = useState();
     const [array, setArray] = useState([]);
     const [isError, setIsError] = useState(false);
-    const { setEmployee } = useAuthContext();
+    const { setEmployees } = useAuthContext();
 
     const fileReader = new FileReader();
 
@@ -70,7 +70,7 @@ function CsvUpload() {
             const response  = await postData(`http://localhost:3000/users`, {
                 users: [...array]
             });
-            setEmployee((prev) => [...prev, response]);
+            setEmployees((prev) => [...prev, response.data]);
             navigate('/', { replace: true });
         } catch (error) {
             console.log(error)

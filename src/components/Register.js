@@ -19,7 +19,7 @@ const theme = createTheme();
 
 const SignUp = () => {
     const [isError, setIsError] = useState(false);
-    const { setEmployee, setToken, setIsAuthenticated } = useAuthContext();
+    const { setEmployees, setToken, setIsAuthenticated } = useAuthContext();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -37,8 +37,6 @@ const SignUp = () => {
             });
             localStorage.setItem("token", response.data.token);
             setToken( response.data.token);
-            // setIsAuthenticated(true);
-            // setEmployee((prev) => [...prev, response]);
             navigate('/login', { replace: true });
         }
         catch (error) {
