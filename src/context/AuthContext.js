@@ -10,9 +10,11 @@ import {
 const AuthContext = createContext();
 
 const AuthContextProvider = ({ children }) => {
+  // get token from local storage if exists
   const [token, setToken] = useState(localStorage.getItem("token") || null);
+  // const [user, setUser] = useState(null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [employee, setEmployee] = useState([]);
+  const [employee, setEmployee] = useState();
   const [user, setUser] = useState({
     firstName: "",
     lastName: "",
@@ -44,16 +46,15 @@ const AuthContextProvider = ({ children }) => {
   
   useEffect(() => {
     const getEmployee = async () => {
-      if(!isAuthenticated) return ;
       try {
-          const { data } = await axios.get(`http://localhost:3000/users`);
-          setEmployee(data);
+        const { data } = await axios.get(`http://localhost:3000/users`);
+        setEmployee(data);
       } catch (error) {
         console.log(error)
       }
     };
     getEmployee();
-  }, [isAuthenticated]);
+  }, []);
 
   return (
     <AuthContext.Provider
@@ -64,8 +65,7 @@ const AuthContextProvider = ({ children }) => {
         isAuthenticated,
         setIsAuthenticated,
         employee,
-        setEmployee, 
-        // open, setOpen, handleOpen, handleClose
+        setEmployee
       }}
     >
       {children}
