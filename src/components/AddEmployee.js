@@ -15,19 +15,24 @@ import axios from 'axios';
 const AddEmployee = () => {
     const navigate = useNavigate();
     const { setEmployee } = useAuthContext();
+    const [array, setArray] = useState([]);
+
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
             const response = await postData(`http://localhost:3000/users`, {
-                firstName: formData.get('firstName'),
-                lastName: formData.get('lastName'),
-                username: formData.get('username'),
-                email: formData.get('email'),
-                address: formData.get('address'),
-                role: formData.get('role'),
-                password: formData.get('password'),
+                users: [{
+                    firstName: formData.get('firstName'),
+                    lastName: formData.get('lastName'),
+                    username: formData.get('username'),
+                    email: formData.get('email'),
+                    address: formData.get('address'),
+                    role: formData.get('role'),
+                    password: formData.get('password')
+                }]
             });
+            console.log(response);
             setEmployee((prev) => [...prev, response]);
             navigate('/', { replace: true });
         } catch (error) {
