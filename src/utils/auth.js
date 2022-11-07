@@ -14,7 +14,6 @@ const postData = async (url, userData) => {
   return response;
 };
 const loginUser = async (userData) => {
-
   try {
     const response = await axios.post(
       `http://localhost:3000/users/signin`,
@@ -37,27 +36,6 @@ const getUserContext = async (token) => {
   }
 };
 
-// const deleteEmployee = async (token) => {
-//   try {
-//     const { data } = await axios.get(`http://localhost:3000/users/me`, {
-//       headers: { Authorization: token }
-//     });
-//     return { data };
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
-
-// const editEmployee = async (token) => {
-//   try {
-//     const { data } = await axios.get(`http://localhost:3000/users/:id`, {
-//       headers: { Authorization: token }
-//     });
-//     return { data };
-//   } catch (error) {
-//     console.log(error);
-//   }
-// };
 
 const saveToLocalStorage = (token) => {
   localStorage.setItem('token', token);
