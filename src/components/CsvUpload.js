@@ -17,17 +17,21 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import Alert from '@mui/material/Alert';
 import AlertTitle from '@mui/material/AlertTitle';
+import { useNavigate } from 'react-router-dom';
+
 function CsvUpload() {
     const [file, setFile] = useState();
     const [array, setArray] = useState([]);
     const [isError, setIsError] = useState(false);
+    const { setEmployee } = useAuthContext();
 
     const fileReader = new FileReader();
 
     const handleOnChange = (e) => {
         setFile(e.target.files[0]);
+        handleOnSubmit(e);
     };
-    console.log(file);
+    const navigate = useNavigate();
 
     const csvFileToArray = string => {
         const csvHeader = string.slice(0, string.indexOf("\n")).split(";");
@@ -40,7 +44,6 @@ function CsvUpload() {
             }, {});
             return obj;
         });
-
         setArray(array);
     };
 
@@ -58,8 +61,23 @@ function CsvUpload() {
             setIsError(true)
         }
     };
-
     const headerKeys = Object.keys(Object.assign({}, ...array));
+    console.log(array);
+
+    const addEmployees = async (e) => {
+        try {
+            e.preventDefault();
+            const response  = await postData(`http://localhost:3000/users`, {
+                users: [...array]
+            });
+            setEmployee((prev) => [...prev, response]);
+            navigate('/', { replace: true });
+        } catch (error) {
+            console.log(error)
+        }
+    };
+    
+
 
     return (
 
@@ -67,7 +85,7 @@ function CsvUpload() {
             <Typography variant="h6" gutterBottom>
                 Import Employees from CSV File
             </Typography>
-            <Grid container component="form" spacing={2} noValidate onSubmit={handleOnSubmit}>
+            <Grid container component="form" spacing={2} noValidate>
                 <Grid item xs={12} sm={6} >
                     <Input
                         type={"file"}
@@ -77,8 +95,8 @@ function CsvUpload() {
                     />
                 </Grid>
                 <Grid item xs={12} sm={6}>
-                    <Button variant="contained" type="submit">
-                        IMPORT CSV
+                    <Button variant="contained" onClick={addEmployees}>
+                        Add Employees
                     </Button>
                 </Grid>
             </Grid>
