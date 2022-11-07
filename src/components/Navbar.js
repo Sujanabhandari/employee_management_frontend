@@ -7,7 +7,7 @@ import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 import Link from '@mui/material/Link';
-
+import CsvUpload from './CsvUpload';
 
 export default function Navbar({logout}) {
     const { user,
@@ -21,14 +21,15 @@ export default function Navbar({logout}) {
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link color="inherit" href={isAuthenticated ? '/': '/login'}>Employee Registry</Link>
+            <Link color="inherit" underline="none" href={isAuthenticated ? '/': '/login'}>Employee Registry</Link>
           </Typography>
           {isAuthenticated ? (
           <>
-          <Link color="inherit" href="/addEmployee">ADD Employee</Link>
+          <Link color="inherit" mr={2} underline="none" href="/upload">Import Employee</Link>
+          <Link color="inherit" mr={2} underline="none" href="/addEmployee">Add Employee</Link>
           <Button color="inherit" onClick={logout}>Logout</Button>
           </>):(
-            <Link color="inherit" href="/login">SignIn</Link>
+            <Link color="inherit" underline="none" href="/login">SignIn</Link>
           )}
         </Toolbar>
       </AppBar>
