@@ -21,6 +21,14 @@ const putData = async (url, userData) => {
   return response;
 };
 
+const getData = async (url) => {
+  const response = await axios.get(url , {
+    headers: { Authorization: localStorage.getItem("token") }
+  });
+
+  return response;
+};
+
 const loginUser = async (userData) => {
   try {
     const response = await axios.post(
@@ -66,5 +74,6 @@ export {
   saveToLocalStorage,
   removeFromLocalStorage,
   postData,
-  putData
+  putData,
+  getData
 };
