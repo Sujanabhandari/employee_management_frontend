@@ -13,6 +13,7 @@ const AuthContextProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [employees, setEmployees] = useState([]);
+  // const [comments, setComments] = useState([]);
   const [user, setUser] = useState({
     firstName: "",
     lastName: "",
@@ -54,6 +55,7 @@ const AuthContextProvider = ({ children }) => {
     };
     getEmployee();
   }, [isAuthenticated]);
+
 
   return (
     <AuthContext.Provider
