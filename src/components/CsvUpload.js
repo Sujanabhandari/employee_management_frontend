@@ -32,7 +32,7 @@ function CsvUpload() {
         handleOnSubmit(e);
     };
     const navigate = useNavigate();
-
+    
     const csvFileToArray = string => {
         const csvHeader = string.slice(0, string.indexOf("\n")).split(";");
         const csvRows = string.slice(string.indexOf("\n") + 1).split("\n");
@@ -49,7 +49,7 @@ function CsvUpload() {
 
     const handleOnSubmit = (e) => {
         e.preventDefault();
-        if (file && file.type === "text/csv") {
+        if (file && file.type == "text/csv") {
             setIsError(false)
             fileReader.onload = function (event) {
                 const text = event.target.result;
@@ -70,7 +70,7 @@ function CsvUpload() {
             const response  = await postData(`http://localhost:3000/users`, {
                 users: [...array]
             });
-            setEmployees((prev) => [...prev, response.data]);
+            setEmployees((prev) => [...prev, ...response.data]);
             navigate('/', { replace: true });
         } catch (error) {
             console.log(error)

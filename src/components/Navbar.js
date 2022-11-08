@@ -6,33 +6,33 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
-import Link from '@mui/material/Link';
+// import Link from '@mui/material/Link';
 import CsvUpload from './CsvUpload';
+import { Modal } from '@mui/material';
+import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-export default function Navbar({logout}) {
-    const { user,
-        setUser,
-        setToken,
-        isAuthenticated,
-        setIsAuthenticated,
-        } = useAuthContext();
+export default function Navbar({ logout }) {
+  const { isAuthenticated } = useAuthContext();
+  const [modalShow, setModalShow] = useState(false);
+
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link color="inherit" underline="none" href={isAuthenticated ? '/': '/login'}>Employee Registry</Link>
+            <Link underline="none" style={{ color: '#FFF' }} to={isAuthenticated ? '/' : '/login'}>Employee Registry</Link>
           </Typography>
           {isAuthenticated ? (
-          <>
-          <Link color="inherit" mr={2} underline="none" href="/upload">Import Employee</Link>
-          <Link color="inherit" mr={2} underline="none" href="/addEmployee">Add Employee</Link>
-          <Button color="inherit" onClick={logout}>Logout</Button>
-          </>):(
-            <Link color="inherit" underline="none" href="/login">SignIn</Link>
+            <>
+              <Link mr={2} style={{ color: '#FFF', marginRight:'20px' }} underline="none" to="/upload">Import Employee</Link>
+              <Link style={{ color: '#FFF', marginRight:'20px'}} underline="none" to="/addEmployee">Add Employee</Link>
+              <Button color="inherit" onClick={logout}>Logout</Button>
+            </>) : (
+            <Link color="inherit" underline="none" to="/login">SignIn</Link>
           )}
         </Toolbar>
       </AppBar>
     </Box>
   );
-}
+} 

@@ -13,6 +13,7 @@ import SingleEmployee from './components/SingleEmployee';
 import Employee from './components/Employees';
 import EditEmployee from './components/EditEmployee';
 import CsvUpload from './components/CsvUpload';
+
 function App() {
   const { setUser, setToken, isAuthenticated, setIsAuthenticated,setEmployees,token } = useAuthContext();
   const navigate = useNavigate();
@@ -33,14 +34,12 @@ function App() {
       <Routes>
         <Route path="/" element={<GlobalLayout />} >
           <Route index element={<Home />} />
-          {/* <Route path="/employee" element={<Employee />} /> */}
           <Route path="/employee/:id" element={<SingleEmployee />} />
           <Route path="/editemployee" element={<EditEmployee/>} />
           <Route path="/addEmployee" element={<AddEmployee />} />
           <Route path="/login" element={<SignIn />} />
           <Route index path="/register" element={<SignUp />} />
           <Route index path="/upload" element={<CsvUpload />} />
-          {/* <Route path='secret' element={<ProtectedLayout isAuthenticated={isAuthenticated} />} /> */}
         </Route>
       </Routes>
     </div>
