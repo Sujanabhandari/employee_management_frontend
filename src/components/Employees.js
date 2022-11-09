@@ -13,6 +13,7 @@ import { deleteEmployee } from "../utils/deleteEmployee";
 import EditEmployee from "./EditEmployee";
 import Modal from '@mui/material/Modal';
 import SingleEmployee from "./SingleEmployee";
+import CommentDisplay from "./CommentDisplay";
 
 const style = {
     position: 'absolute',
@@ -48,26 +49,31 @@ function Employee() {
         {
             field: 'lastName',
             headerName: 'Last name',
+            filterable: false,
             width: 135
         },
         {
             field: 'email',
             headerName: 'Email',
+            filterable: false,
             width: 135
         },
         {
             field: 'userName',
             headerName: 'UserName',
+            filterable: false,
             width: 135
         },
         {
             field: 'address',
             headerName: 'Address',
+            filterable: false,
             width: 135
         },
         {
             field: 'role',
             headerName: 'Role',
+            filterable: false,
             type: 'number',
             width: 135
         },
@@ -107,9 +113,11 @@ function Employee() {
                 <DataGrid
                     rows={employees}
                     columns={columns}
-                    pageSize={10}
+                    pageSize={5}
                     getRowId={(row, index) => row._id}
+                     rowsPerPageOptions={[5, 10, 20]}
                     experimentalFeatures={{ newEditingApi: true }}
+                    disableColumnFilter 
                 />
                 <EditEmployee employee={currentEmployee} show={modalShow}
                     onHide={() => setModalShow(false)}
@@ -118,5 +126,4 @@ function Employee() {
         </>
     );
 }
-
 export default Employee;

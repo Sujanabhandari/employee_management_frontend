@@ -34,15 +34,16 @@ const Comment = ({employeeId, setComments}) => {
 
   return (
     <><Typography>
-      <strong>Comment</strong>
+      <strong>Add Comment</strong>
     </Typography>
       <Grid component="form" onSubmit={handleSubmit}>
         <Textarea
-          placeholder="Type something here…"
+          placeholder="Write your comment…"
           minRows={3}
           id="message"
           name="message"
-          endDecorator={<Box
+          endDecorator={
+          <Box
             sx={{
               display: 'flex',
               borderTop: '1px solid',
