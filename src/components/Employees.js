@@ -3,29 +3,19 @@ import Button from '@mui/material/Button';
 import { useLocation, Link } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 import Box from '@mui/material/Box';
-import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import { Stack } from "@mui/system";
 import { deleteEmployee } from "../utils/deleteEmployee";
 import EditEmployee from "./EditEmployee";
 import { Typography } from "@mui/material";
-
-const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 400,
-    bgcolor: 'background.paper',
-    border: '2px solid #000',
-    boxShadow: 24,
-    p: 4,
-};
-
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import AccountBoxIcon from '@mui/icons-material/AccountBox';
 
 function Employee() {
     const { employees, setEmployees } = useAuthContext();
     const [modalShow, setModalShow] = useState(false);
-    const [currentEmployee, setCurrentEmployee]  = useState({});
+    const [currentEmployee, setCurrentEmployee] = useState({});
 
     const columns = [
         {
@@ -74,7 +64,7 @@ function Employee() {
         {
             field: 'actions',
             headerName: 'Actions',
-            width: 500,
+            width: 400,
             filterable: false,
             renderCell: (params) => {
                 const deleteClick = async (e) => {
@@ -82,37 +72,43 @@ function Employee() {
                     const deleteRow = await deleteEmployee(e, currentRow._id);
                     setEmployees(current => current.filter(emp => emp._id !== currentRow._id));
                 };
-                
+
                 return (
                     <Stack direction="row" spacing={1}>
-                        <Button variant="outlined" color="primary" size="small"
+                        <Button color="primary" size="small"
                             onClick={() => {
                                 setCurrentEmployee(params.row);
                                 setModalShow(true);
                             }} >
-                            Edit</Button>
-                        <Button variant="outlined" color="primary" size="small" onClick={() => {
-                              
-                            }}><Link to={`/employee/${params.row._id}`}>Details</Link></Button>
-                        <Button variant="outlined" color="error" size="small" onClick={deleteClick}>Delete</Button>
+                            <EditIcon color="secondary" fontSize="large"
+                            /> </Button>
+                        <Button color="primary" size="small" onClick={() => {
+
+                        }}><Link to={`/employee/${params.row._id}`}>
+                                <AccountBoxIcon color="secondary" fontSize="large"
+                                />
+                            </Link></Button>
+                        <Button color="error" size="small" onClick={deleteClick}>
+                            <DeleteIcon fontSize="large"
+                            />
+                        </Button>
                     </Stack>
                 );
             },
         }
     ];
-
     return (
         <>
-            <Box sx={{ height: 500, width: '100%' }}>
-                <Typography align="center" variant="h5" mb={3}>Employee Information</Typography>
+            <Box mt="4" sx={{ height: 600, width: '100%', marginTop: '100px' }}>
+                <Typography align="center" variant="h5" mb={3}>Employees Information</Typography>
                 <DataGrid
                     rows={employees}
                     columns={columns}
-                    pageSize={5}
+                    pageSize={10}
                     getRowId={(row, index) => row._id}
-                     rowsPerPageOptions={[5, 10, 20]}
+                    rowsPerPageOptions={[20, 40, 80]}
                     experimentalFeatures={{ newEditingApi: true }}
-                    disableColumnFilter 
+                    disableColumnFilter
                 />
                 <EditEmployee employee={currentEmployee} show={modalShow}
                     onHide={() => setModalShow(false)}

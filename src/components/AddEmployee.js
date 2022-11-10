@@ -10,6 +10,8 @@ import { register, postData } from "../utils/auth";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from 'axios';
+import Box from '@mui/material/Box';
+import { toast } from "react-toastify";
 
 const AddEmployee = () => {
     const navigate = useNavigate();
@@ -20,7 +22,7 @@ const AddEmployee = () => {
         try {
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
-            const response = await postData(`http://localhost:3000/users`, {
+            const {data, error} = await postData(`http://localhost:3000/users`, {
                 users: [{
                     firstName: formData.get('firstName'),
                     lastName: formData.get('lastName'),
@@ -31,16 +33,20 @@ const AddEmployee = () => {
                     password: formData.get('password')
                 }]
             });
-            console.log(response);
-            setEmployees((prev) => [...prev, ...response.data]);
+            if (error) {
+                throw new Error(error.response?.data.error || error.message);
+              }
+            
+            setEmployees((prev) => [...prev, ...data]);
             navigate('/');
+
         } catch (error) {
-            console.log(error)
+            toast(error.message)
         }
     };
 
     return (
-        <Container maxWidth="sm">
+        <Container maxWidth="sm" m="5" sx={{marginTop:"100px"}}>
             <Typography variant="h6" gutterBottom>
                 Add new Employee
             </Typography>
@@ -97,17 +103,6 @@ const AddEmployee = () => {
                         label="Your role in Company"
                         fullWidth
                         autoComplete="Role"
-                        variant="standard" />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                    required
-                        id="password"
-                        name="password"
-                        label="Password"
-                        type="password"
-                        fullWidth
-                        autoComplete="password"
                         variant="standard" />
                 </Grid>
                 <Grid item xs={12}>
