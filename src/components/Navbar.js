@@ -29,7 +29,7 @@ export default function Navbar({ logout }) {
               <Link style={{ color: '#FFF', marginRight:'20px'}} underline="none" to="/addEmployee">Add Employee</Link>
               <Button color="inherit" onClick={logout}>Logout</Button>
             </>) : (
-            <Link color="inherit" underline="none" to="/login">SignIn</Link>
+            <Button component={Link} color="inherit" to={'/login'}>Login</Button>
           )}
         </Toolbar>
       </AppBar>

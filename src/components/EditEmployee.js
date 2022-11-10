@@ -8,6 +8,7 @@ import Modal from '@mui/material/Modal';
 import axios from 'axios';
 import { putData } from '../utils/auth';
 import { useAuthContext } from "../context/AuthContext";
+
 const style = {
     position: 'absolute',
     top: '50%',
@@ -36,7 +37,6 @@ const EditEmployee = ({ employee, show, onHide }) => {
                 password: formData.get('password'),
             };
             const response = await putData(`http://localhost:3000/users/${employee._id}`, changedEmployee);
-            // current is the employees state
             setEmployees(current => current.map(emp => emp._id === employee._id ? {...emp, ...response.data} : emp));
             onHide();
         } catch (error) {

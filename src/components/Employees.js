@@ -1,8 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import { useLocation, Link } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
@@ -11,9 +7,7 @@ import { DataGrid, GridColDef, GridValueGetterParams } from '@mui/x-data-grid';
 import { Stack } from "@mui/system";
 import { deleteEmployee } from "../utils/deleteEmployee";
 import EditEmployee from "./EditEmployee";
-import Modal from '@mui/material/Modal';
-import SingleEmployee from "./SingleEmployee";
-import CommentDisplay from "./CommentDisplay";
+import { Typography } from "@mui/material";
 
 const style = {
     position: 'absolute',
@@ -109,7 +103,8 @@ function Employee() {
 
     return (
         <>
-            <Box sx={{ height: 650, width: '100%' }}>
+            <Box sx={{ height: 500, width: '100%' }}>
+                <Typography align="center" variant="h5" mb={3}>Employee Information</Typography>
                 <DataGrid
                     rows={employees}
                     columns={columns}

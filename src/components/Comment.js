@@ -1,62 +1,53 @@
 import * as React from 'react';
-import Box from '@mui/joy/Box';
-import FormControl from '@mui/joy/FormControl';
-import Textarea from '@mui/joy/Textarea';
-import IconButton from '@mui/joy/IconButton';
-import Menu from '@mui/joy/Menu';
-import MenuItem from '@mui/joy/MenuItem';
-import { Typography } from '@mui/material';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { postData } from '../utils/auth';
 import { useAuthContext } from "../context/AuthContext";
+import CommentDisplay from './CommentDisplay';
+import { TextareaAutosize } from '@mui/material';
+import Typography from '@mui/material/Typography';
 
-const Comment = ({employeeId, setComments}) => {
+const Comment = ({ employeeId, setComments, comments }) => {
   const { user } = useAuthContext();
   console.log(user._id);
 
   const handleSubmit = async (e) => {
     try {
-        e.preventDefault();
-        const formData = new FormData(e.currentTarget);
-        console.log("Form", formData.get("message"));
-        const response = await postData('http://localhost:3000/comments',{
-          message: formData.get('message'),
-          employeeId: employeeId,
-          authorId: user._id,
-        });
-        setComments((prev) => [...prev, response.data]);
+      e.preventDefault();
+      const formData = new FormData(e.currentTarget);
+      console.log("Form", formData.get("message"));
+      const response = await postData('http://localhost:3000/comments', {
+        message: formData.get('message'),
+        employeeId: employeeId,
+        authorId: user._id,
+      });
+      setComments((prev) => [response.data, ...prev]);
     }
     catch (error) {
-        console.log(error);
+      console.log(error);
     }
-};
-
+  };
   return (
-    <><Typography>
-      <strong>Add Comment</strong>
-    </Typography>
+    <>
       <Grid component="form" onSubmit={handleSubmit}>
-        <Textarea
+        <Typography variant="h5">Comments</Typography>
+        <TextareaAutosize
           placeholder="Write your comment…"
-          minRows={3}
+          minRows={4}
           id="message"
           name="message"
-          endDecorator={
-          <Box
-            sx={{
-              display: 'flex',
-              borderTop: '1px solid',
-              borderColor: 'divider',
-              flex: 'auto',
-            }}
-          >
-            <Button sx={{ ml: 'auto' }} type="submit">Comment</Button>
-          </Box>}
-          sx={{
-            minWidth: 300,
-          }} />
-      </Grid></>
+          style={{ width: "100%" }} />
+          
+          <Button sx={{ ml: 'auto' }} type="submit" variant="contained">Comment</Button>  
+      
+      </Grid>
+      <Grid item xs={12}>
+        {comments?.map((comment, index) =>
+          <CommentDisplay key={index} comment={comment} />
+        )}
+      </Grid>
+    </>
+
   );
 }
 

@@ -9,13 +9,10 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 import { register } from "../utils/auth";
 
-
-const theme = createTheme();
 
 const SignUp = () => {
     const [isError, setIsError] = useState(false);
@@ -46,7 +43,7 @@ const SignUp = () => {
     };
 
     return (
-        <ThemeProvider theme={theme}>
+        <>
             <Container component="main" maxWidth="xs">
                 <CssBaseline />
                 <Box
@@ -57,7 +54,7 @@ const SignUp = () => {
                         alignItems: 'center',
                     }}
                 >
-                    <Typography component="h1" variant="h5">
+                    <Typography variant="h4">
                         Sign up
                     </Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
@@ -140,6 +137,7 @@ const SignUp = () => {
                             type="submit"
                             fullWidth
                             variant="contained"
+                            color="secondary"
                             sx={{ mt: 3, mb: 2 }}
                         >
                             Sign Up
@@ -154,7 +152,7 @@ const SignUp = () => {
                     </Box>
                 </Box>
             </Container>
-        </ThemeProvider>
+        </>
     );
 }
 

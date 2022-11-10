@@ -1,19 +1,14 @@
 import React, { useState, useEffect } from "react";
 import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
 import CardContent from '@mui/material/CardContent';
-import CardMedia from '@mui/material/CardMedia';
-import Button from '@mui/material/Button';
 import { useAuthContext } from "../context/AuthContext";
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import axios from "axios";
-import { useLocation, useParams, useNavigate, AbortedDeferredError } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import { Container } from '@mui/system';
 import Comment from "./Comment";
 import Box from '@mui/material/Box';
 import { getData } from "../utils/auth";
-import CommentDisplay from "./CommentDisplay";
 
 function SingleEmployee() {
     const { employees, setEmployees, user } = useAuthContext();
@@ -46,10 +41,10 @@ function SingleEmployee() {
                         </Typography>
                     </Grid>
 
-                    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} item alignItems="center" justify="center"
+                    <Grid container rowSpacing={1} columnSpacing={{ xs: 1, sm: 2, md: 3 }} justify="center"
                         justifyContent="center"
                     >
-                        <Grid item xs={12} md={8}>
+                        <Grid item sm={12} md={6}>
                             <Card>
                                 <CardContent>
                                     <Typography gutterBottom variant="h5" component="div">
@@ -77,18 +72,8 @@ function SingleEmployee() {
                             </Card>
 
                         </Grid>
-                        <Grid item xs={12} md={4}>
-                            <Comment employeeId={id} setComments={setComments} />
-                        </Grid>
-                        <Grid item xs={12}>
-                        <Typography variant="h6" color="text.secondary" mt={1}>
-                            Comments
-                        </Typography>
-                        </Grid>
-                        <Grid item xs={12}>
-                            {comments?.map((singleComment, index) =>
-                                <CommentDisplay message={singleComment.message} key={index} comments={singleComment} />
-                            )}
+                        <Grid item sm={12} md={6}>
+                            <Comment employeeId={id} setComments={setComments} comments={comments} />
                         </Grid>
                     </Grid>
                 </Box>
