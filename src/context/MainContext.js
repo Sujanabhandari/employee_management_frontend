@@ -2,14 +2,12 @@ import { useEffect } from "react";
 import { createContext, useState, useContext } from "react";
 import axios from 'axios';
 import {
-  getFromLocalStorage,
   getUserContext,
-  saveToLocalStorage,
 } from "../utils/auth";
 
-const AuthContext = createContext();
+const MainContext = createContext();
 
-const AuthContextProvider = ({ children }) => {
+const MainContextProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [employees, setEmployees] = useState([]);
@@ -47,7 +45,11 @@ const AuthContextProvider = ({ children }) => {
     const getEmployee = async () => {
       if(!isAuthenticated) return ;
       try {
-          const { data } = await axios.get(`http://localhost:3000/users`);
+          const { data } = await axios.get(`http://localhost:3000/users`,
+          {
+              headers: { 'Authorization': `${localStorage.getItem("token")}` }
+          }
+      );;
           setEmployees(data);
       } catch (error) {
         console.log(error)
@@ -58,7 +60,7 @@ const AuthContextProvider = ({ children }) => {
 
 
   return (
-    <AuthContext.Provider
+    <MainContext.Provider
       value={{
         user,
         setUser,
@@ -66,15 +68,14 @@ const AuthContextProvider = ({ children }) => {
         isAuthenticated,
         setIsAuthenticated,
         employees,
-        setEmployees, 
-        // open, setOpen, handleOpen, handleClose
+        setEmployees
       }}
     >
       {children}
-    </AuthContext.Provider>
+    </MainContext.Provider>
   );
 };
 
-const useAuthContext = () => useContext(AuthContext);
+const useMainContext = () => useContext(MainContext);
 
-export { useAuthContext, AuthContextProvider };
+export { useMainContext, MainContextProvider };

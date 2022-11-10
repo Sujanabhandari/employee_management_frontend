@@ -1,29 +1,41 @@
-
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 import { Container } from '@mui/system';
-import { Button } from '@mui/material';
-import { useAuthContext } from "../context/AuthContext";
-import { register, postData } from "../utils/auth";
-import React, { useState, useEffect } from "react";
-import Input from '@mui/material/Input';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import Alert from '@mui/material/Alert';
-import AlertTitle from '@mui/material/AlertTitle';
+import { useMainContext } from "../context/MainContext";
+import { postData } from "../utils/auth";
+import React, { useState, useEffect, useRef } from "react";
+import { Grid, Typography, Button, Input, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Alert, AlertTitle } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
+import DeleteIcon from '@mui/icons-material/Delete';
+import { csvFileToArray } from '../utils/file';
+
+const CSVHEADERMAP = {
+    'firstname': 'firstName',
+    'vorname': 'firstName',
+    'lastname': 'lastName',
+    'nachname': 'lastName',
+    'username': 'userName',
+    'email': 'email',
+    'street': 'street',
+    'strasse': 'street',
+    'no': 'housenumber',
+    'nr': 'housenumber',
+    'postcode': 'postcode',
+    'zip': 'postcode',
+    'plz': 'postcode',
+    'city': 'city',
+    'ort': 'city',
+    'country': 'country',
+    'land': 'country',
+    'address': 'address',
+    'role': 'role',
+    'rolle': 'role'
+}
 
 function CsvUpload() {
-    const [file, setFile] = useState();
+    const [file, setFile] = useState(null);
     const [array, setArray] = useState([]);
-    const [isError, setIsError] = useState(false);
-    const { setEmployees } = useAuthContext();
+    const { setEmployees } = useMainContext();
+    const fileInput = useRef();
 
     const fileReader = new FileReader();
 
@@ -33,33 +45,19 @@ function CsvUpload() {
     };
     const navigate = useNavigate();
 
-    const csvFileToArray = string => {
-        const csvHeader = string.slice(0, string.indexOf("\n")).split(";");
-        const csvRows = string.slice(string.indexOf("\n") + 1).split("\n");
-        const array = csvRows.map(i => {
-            const values = i.split(";");
-            const obj = csvHeader.reduce((object, header, index) => {
-
-                object[header] = values[index];
-                return object;
-            }, {});
-            console.log("Object", obj)
-            return obj;
-        });
-        setArray(array);
-    };
-
     useEffect(() => {
+        if (file == null) return;
         if (file && file.type === "text/csv") {
-            setIsError(false);
             fileReader.onload = function (event) {
                 const text = event.target.result;
-                csvFileToArray(text);
+                const { data, error } = csvFileToArray(text, CSVHEADERMAP);
+                if (error) return;
+                setArray(data);
             };
             fileReader.readAsText(file);
         }
         else {
-            setIsError(true);
+            toast.error('Only csv files are supported!');
         }
     }, [file])
 
@@ -72,7 +70,7 @@ function CsvUpload() {
                 users: [...array]
             });
             console.log("Response", response)
-            
+
             if (response.error) {
                 throw new Error(response.error.response?.data.error || response.error.message);
             }
@@ -85,31 +83,33 @@ function CsvUpload() {
     };
 
     return (
-        <Container maxWidth="sm">
+        <Container maxWidth="md" sx={{ mt: 4 }}>
             <Typography variant="h6" gutterBottom>
                 Import Employees from CSV File
             </Typography>
-            <Grid container component="form" spacing={2} noValidate>
+            <Grid container component="form" spacing={2} sx={{ mt: 4 }}>
                 <Grid item xs={12} sm={6} >
                     <Input
                         type={"file"}
                         id={"csvFileInput"}
                         accept={".csv"}
                         onChange={handleOnChange}
+                        inputRef={fileInput}
                     />
                 </Grid>
-                <Grid item xs={12} sm={6}>
+                <Grid item xs={12} sm={3}>
+                    <Button color="error" size="small" onClick={() => { fileInput.current.value = ""; setArray([]) }}>
+                        <DeleteIcon fontSize="medium"
+                        />
+                    </Button>
+                </Grid>
+                <Grid item xs={12} sm={3}>
                     <Button variant="contained" onClick={addEmployees}>
                         Add Employees
                     </Button>
                 </Grid>
             </Grid>
-            {isError && file ? (
-                <Alert severity="error">
-                    <AlertTitle>File Type Error</AlertTitle>
-                    Please Upload Only CSv File
-                </Alert>
-            ) : (<TableContainer component={Paper}>
+            <TableContainer component={Paper}>
                 <Table aria-label="simple table">
                     <TableHead>
                         <TableRow>
@@ -130,7 +130,7 @@ function CsvUpload() {
                         ))}
                     </TableBody>
                 </Table>
-            </TableContainer>)}
+            </TableContainer>
 
 
         </Container>

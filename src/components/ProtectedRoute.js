@@ -1,8 +1,8 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuthContext } from "../context/AuthContext";
+import { useMainContext } from "../context/MainContext";
 
 const ProtectedLayout = () => {
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated } = useMainContext();
   return (
     <div className="container">
       {isAuthenticated ? <Outlet /> : <Navigate to="/login" />}

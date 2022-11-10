@@ -7,7 +7,7 @@ import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
 import axios from 'axios';
 import { putData } from '../utils/auth';
-import { useAuthContext } from "../context/AuthContext";
+import { useMainContext } from "../context/MainContext";
 
 const style = {
     position: 'absolute',
@@ -22,7 +22,7 @@ const style = {
 };
 
 const EditEmployee = ({ employee, show, onHide }) => {
-    const { setEmployees } = useAuthContext();
+    const { setEmployees } = useMainContext();
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();

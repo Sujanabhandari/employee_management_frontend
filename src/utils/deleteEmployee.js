@@ -1,6 +1,4 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "../context/AuthContext";
 
 export const deleteEmployee = async (e, id) => {
     try {

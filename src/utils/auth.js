@@ -1,8 +1,11 @@
 import axios from 'axios';
-import { useAuthContext } from "../context/AuthContext";
+
+const baseUrl = "http://localhost:3000";
 
 const register = async (userData) => {
-  const response = await axios.post(`http://localhost:3000/users/signup`, userData);
+
+  console.log("From reagist", baseUrl)
+  const response = await axios.post(`${baseUrl}/signup`, userData);
   return response;
 };
 
@@ -32,7 +35,7 @@ const getData = async (url) => {
 const loginUser = async (userData) => {
   try {
     const response = await axios.post(
-      `http://localhost:3000/users/signin`,
+      `${baseUrl}/signin`,
       userData
     );
     return response;
@@ -43,7 +46,7 @@ const loginUser = async (userData) => {
 
 const getUserContext = async (token) => {
   try {
-    const { data } = await axios.get(`http://localhost:3000/users/me`, {
+    const { data } = await axios.get(`${baseUrl}/users/me`, {
       headers: { Authorization: token }
     });
     return { data };
