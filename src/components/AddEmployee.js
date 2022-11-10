@@ -32,7 +32,7 @@ const AddEmployee = () => {
                 }]
             });
             console.log(response);
-            setEmployees((prev) => [...prev, response]);
+            setEmployees((prev) => [...prev, ...response.data]);
             navigate('/');
         } catch (error) {
             console.log(error)

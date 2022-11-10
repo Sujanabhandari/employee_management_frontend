@@ -13,6 +13,10 @@ import SingleEmployee from './components/SingleEmployee';
 import Employee from './components/Employees';
 import EditEmployee from './components/EditEmployee';
 import CsvUpload from './components/CsvUpload';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { appTheme } from './themes/theme';
 
 function App() {
   const { setUser, setToken, isAuthenticated, setIsAuthenticated,setEmployees,token } = useAuthContext();
@@ -28,7 +32,9 @@ function App() {
     navigate('/login', { replace: true });
   };
   return (
-    <div>
+    <ThemeProvider theme={appTheme}>
+      <CssBaseline enableColorScheme />
+      <ToastContainer />
       <Navbar isAuthenticated={isAuthenticated}
         setToken={setToken} logout={logout} />
       <Routes>
@@ -42,7 +48,7 @@ function App() {
           <Route index path="/upload" element={<CsvUpload />} />
         </Route>
       </Routes>
-    </div>
+    </ThemeProvider>
   );
 }
 
