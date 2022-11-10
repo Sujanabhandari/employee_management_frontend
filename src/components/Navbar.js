@@ -4,7 +4,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { useAuthContext } from "../context/AuthContext";
+import { useMainContext } from "../context/MainContext";
 import Link from '@mui/material/Link';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import UploadFileIcon from '@mui/icons-material/UploadFile';
@@ -14,14 +14,14 @@ import {
 import LogoutIcon from '@mui/icons-material/Logout';
 
 export default function Navbar({ logout }) {
-  const { isAuthenticated } = useAuthContext();
+  const { isAuthenticated } = useMainContext();
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link component={RouterLink} underline="none" style={{ color: '#FFF' }} to={isAuthenticated ? '/' : '/login'}>Badumts GmbH</Link>
+            <Link component={RouterLink} underline="none" color="inherit" to={isAuthenticated ? '/' : '/login'}>Badumts GmbH</Link>
           </Typography>
           {isAuthenticated ? (
             <>
@@ -37,7 +37,8 @@ export default function Navbar({ logout }) {
               </Link>
               <Button color="inherit" onClick={logout}><LogoutIcon fontSize="large"/></Button>
             </>) : (
-            <Link component={RouterLink} style={{ color: '#FFF', marginRight: '20px' }} underline="none" to='/login'>Login</Link>
+            <Link component={RouterLink} color="inherit"
+            style={{ marginRight: '20px' }} underline="none" to='/login'>Login</Link>
           )}
         </Toolbar>
       </AppBar>

@@ -9,7 +9,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { useAuthContext } from "../context/AuthContext";
+import { useMainContext } from "../context/MainContext";
 import { loginUser, getUserContext } from '../utils/auth';
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -17,7 +17,7 @@ import Link from '@mui/material/Link';
 
 export default function SignIn() {
 
-  const { setIsAuthenticated, setToken, setUser, } = useAuthContext();
+  const { setIsAuthenticated, setToken, setUser, } = useMainContext();
   const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
@@ -39,7 +39,6 @@ export default function SignIn() {
         autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
-        pauseOnHover: true
       });
       navigate('/', { replace: true });
 

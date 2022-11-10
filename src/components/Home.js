@@ -1,23 +1,14 @@
-import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
-import { useAuthContext } from "../context/AuthContext";
+import React from "react";
+import { useMainContext } from "../context/MainContext";
 import Employees from "./Employees";
-import CssBaseline from '@mui/material/CssBaseline';
-import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
-import { useNavigate } from "react-router-dom";
-import { Typography } from "@mui/material";
-const Home = () => {
-  const { user, employees, isAuthenticated } = useAuthContext();
-  const navigate = useNavigate();
-  
-  // useEffect(() => {
-  //   if (!isAuthenticated) navigate('/login', { replace: true });
-  // }, [isAuthenticated]);
+import SignIn from "./SignIn";
 
+const Home = () => {
+  const { isAuthenticated } = useMainContext();
   return (
     <Container>
-      <Employees />
+      {isAuthenticated ? <Employees /> : <SignIn />}
     </Container>
   );
 };

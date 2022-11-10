@@ -5,7 +5,7 @@ import SignIn from './components/SignIn';
 import Home from './components/Home';
 import ProtectedLayout from './components/ProtectedRoute';
 import GlobalLayout from './components/GlobalLayout';
-import { useAuthContext } from './context/AuthContext';
+import { useMainContext } from './context/MainContext';
 import Navbar from './components/Navbar'
 import { useNavigate } from "react-router-dom";
 import AddEmployee from './components/AddEmployee';
@@ -19,7 +19,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import { appTheme } from './themes/theme';
 
 function App() {
-  const { setUser, setToken, isAuthenticated, setIsAuthenticated,setEmployees,token } = useAuthContext();
+  const { setUser, setToken, isAuthenticated, setIsAuthenticated,setEmployees,token } = useMainContext();
   const navigate = useNavigate();
 
   const logout = (event) => {

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import Button from '@mui/material/Button';
 import { useLocation, Link } from "react-router-dom";
-import { useAuthContext } from "../context/AuthContext";
+import { useMainContext } from "../context/MainContext";
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import { Stack } from "@mui/system";
@@ -11,9 +11,10 @@ import { Typography } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
+import { toast } from "react-toastify";
 
 function Employee() {
-    const { employees, setEmployees } = useAuthContext();
+    const { employees, setEmployees } = useMainContext();
     const [modalShow, setModalShow] = useState(false);
     const [currentEmployee, setCurrentEmployee] = useState({});
 
@@ -71,6 +72,7 @@ function Employee() {
                     const currentRow = params.row;
                     const deleteRow = await deleteEmployee(e, currentRow._id);
                     setEmployees(current => current.filter(emp => emp._id !== currentRow._id));
+                    toast.success(`Employee is deleted`)
                 };
 
                 return (
@@ -99,7 +101,7 @@ function Employee() {
     ];
     return (
         <>
-            <Box mt="4" sx={{ height: 600, width: '100%', marginTop: '100px' }}>
+            <Box mt={4} sx={{ height: 800, width: '100%' }}>
                 <Typography align="center" variant="h5" mb={3}>Employees Information</Typography>
                 <DataGrid
                     rows={employees}

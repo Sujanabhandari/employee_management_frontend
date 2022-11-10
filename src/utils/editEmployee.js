@@ -1,6 +1,4 @@
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "../context/AuthContext";
 
 const editEmployee = async (e, id) => {
     try {
@@ -17,7 +15,6 @@ const editEmployee = async (e, id) => {
                 role: formData.get('role'),
                 password: formData.get('password'),
             },
-
             {
                 headers: { 'Authorization': `${localStorage.getItem("token")}` }
             }

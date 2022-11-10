@@ -5,7 +5,7 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Checkbox from '@mui/material/Checkbox';
 import { Container } from '@mui/system';
 import { Button } from '@mui/material';
-import { useAuthContext } from "../context/AuthContext";
+import { useMainContext } from "../context/MainContext";
 import { register, postData } from "../utils/auth";
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
@@ -15,8 +15,7 @@ import { toast } from "react-toastify";
 
 const AddEmployee = () => {
     const navigate = useNavigate();
-    const { setEmployees } = useAuthContext();
-    const [array, setArray] = useState([]);
+    const { setEmployees } = useMainContext();
 
     const handleSubmit = async (e) => {
         try {
@@ -30,13 +29,16 @@ const AddEmployee = () => {
                     email: formData.get('email'),
                     address: formData.get('address'),
                     role: formData.get('role'),
-                    password: formData.get('password')
+                    street: formData.get('street'),
+                    city: formData.get('city'),
+                    country: formData.get('country'),
+                    housenumber: formData.get('housenumber'),
+                    postcode: formData.get('postcode'),
                 }]
             });
             if (error) {
                 throw new Error(error.response?.data.error || error.message);
               }
-            
             setEmployees((prev) => [...prev, ...data]);
             navigate('/');
 
@@ -50,7 +52,7 @@ const AddEmployee = () => {
             <Typography variant="h6" gutterBottom>
                 Add new Employee
             </Typography>
-            <Grid container spacing={3} component="form" noValidate onSubmit={handleSubmit}>
+            <Grid container spacing={3} component="form" onSubmit={handleSubmit}>
                 <Grid item xs={12} sm={6}>
                     <TextField
                         id="firstName"
@@ -78,13 +80,47 @@ const AddEmployee = () => {
                         autoComplete="Username"
                         variant="standard" />
                 </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        id="street"
+                        name="street"
+                        label="Street"
+                        fullWidth
+                        variant="standard" />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        id="housenumber"
+                        name="number"
+                        label="House number"
+                        fullWidth
+                        autoComplete="family-name"
+                        variant="standard" />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        id="postcode"
+                        name="postcode"
+                        label="Postcode"
+                        fullWidth
+                        variant="standard" />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                    <TextField
+                        id="city"
+                        name="city"
+                        label="City"
+                        fullWidth
+                        autoComplete="family-name"
+                        variant="standard" />
+                </Grid>
                 <Grid item xs={12}>
                     <TextField
-                        id="address"
-                        name="address"
-                        label="Address"
+                        id="country"
+                        name="country"
+                        label="Country"
                         fullWidth
-                        autoComplete="address"
+                        autoComplete="family-name"
                         variant="standard" />
                 </Grid>
                 <Grid item xs={12}>
@@ -96,6 +132,7 @@ const AddEmployee = () => {
                         fullWidth
                         variant="standard" />
                 </Grid>
+                
                 <Grid item xs={12}>
                     <TextField
                         id="role"
