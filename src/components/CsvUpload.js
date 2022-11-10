@@ -39,7 +39,7 @@ function CsvUpload() {
         const array = csvRows.map(i => {
             const values = i.split(";");
             const obj = csvHeader.reduce((object, header, index) => {
-              
+
                 object[header] = values[index];
                 return object;
             }, {});
@@ -72,6 +72,7 @@ function CsvUpload() {
                 users: [...array]
             });
             console.log("Response", response)
+            
             if (response.error) {
                 throw new Error(response.error.response?.data.error || response.error.message);
             }

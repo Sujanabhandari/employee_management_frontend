@@ -4,32 +4,40 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
-// import Link from '@mui/material/Link';
-import CsvUpload from './CsvUpload';
-import { Modal } from '@mui/material';
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+import Link from '@mui/material/Link';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import UploadFileIcon from '@mui/icons-material/UploadFile';
+import {
+  Link as RouterLink
+} from 'react-router-dom';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 export default function Navbar({ logout }) {
   const { isAuthenticated } = useAuthContext();
-  const [modalShow, setModalShow] = useState(false);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            <Link underline="none" style={{ color: '#FFF' }} to={isAuthenticated ? '/' : '/login'}>Employee Registry</Link>
+            <Link component={RouterLink} underline="none" style={{ color: '#FFF' }} to={isAuthenticated ? '/' : '/login'}>Badumts GmbH</Link>
           </Typography>
           {isAuthenticated ? (
             <>
-              <Link mr={2} style={{ color: '#FFF', marginRight:'20px' }} underline="none" to="/upload">Import Employee</Link>
-              <Link style={{ color: '#FFF', marginRight:'20px'}} underline="none" to="/addEmployee">Add Employee</Link>
-              <Button color="inherit" onClick={logout}>Logout</Button>
+              <Link component={RouterLink} mr={2}
+                style={{ marginRight: '20px' }} color="inherit"
+                underline="none" to="/upload">
+                <UploadFileIcon fontSize="large"/>
+              </Link>
+              <Link component={RouterLink} color="inherit" style={{ marginRight: '20px' }}
+                underline="none" to="/addEmployee"> 
+                <PersonAddIcon  fontSize="large"
+                 /> 
+              </Link>
+              <Button color="inherit" onClick={logout}><LogoutIcon fontSize="large"/></Button>
             </>) : (
-            <Button component={Link} color="inherit" to={'/login'}>Login</Button>
+            <Link component={RouterLink} style={{ color: '#FFF', marginRight: '20px' }} underline="none" to='/login'>Login</Link>
           )}
         </Toolbar>
       </AppBar>

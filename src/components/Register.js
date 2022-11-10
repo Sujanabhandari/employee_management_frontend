@@ -1,29 +1,27 @@
 
-import React, { useState, useEffect } from "react";
-import Avatar from '@mui/material/Avatar';
+import React, { useState } from "react";
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import { Link } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import { useNavigate } from "react-router-dom";
 import { useAuthContext } from "../context/AuthContext";
 import { register } from "../utils/auth";
-
+import { Link } from "@mui/material";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
-    const [isError, setIsError] = useState(false);
-    const { setEmployees, setToken, setIsAuthenticated } = useAuthContext();
+    const { setToken } = useAuthContext();
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
-            const response = await register({
+            const { data, error } = await register({
                 firstName: formData.get('firstName'),
                 lastName: formData.get('lastName'),
                 userName: formData.get('userName'),
@@ -32,13 +30,22 @@ const SignUp = () => {
                 role: formData.get('role'),
                 password: formData.get('password'),
             });
-            localStorage.setItem("token", response.data.token);
-            setToken( response.data.token);
+            if (error) {
+                throw new Error(error.response?.data.error || error.message);
+              }
+            localStorage.setItem("token", data.token);
+            setToken(data.token);
+            toast('Congratulations Your Account is Created', {
+                position: "top-right",
+                autoClose: 2000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true
+              });
             navigate('/login', { replace: true });
         }
         catch (error) {
-            console.log(error);
-            setIsError(true);
+            toast.error(error.response?.data.error);
         }
     };
 
@@ -54,16 +61,12 @@ const SignUp = () => {
                         alignItems: 'center',
                     }}
                 >
-                    <Typography variant="h4">
-                        Sign up
-                    </Typography>
                     <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
                         <Grid container spacing={2}>
                             <Grid item xs={12} sm={6}>
                                 <TextField
                                     autoComplete="given-name"
                                     name="firstName"
-                                    required
                                     fullWidth
                                     id="firstName"
                                     label="First Name"
@@ -72,7 +75,6 @@ const SignUp = () => {
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField
-                                    required
                                     fullWidth
                                     id="lastName"
                                     label="Last Name"
@@ -84,7 +86,7 @@ const SignUp = () => {
                                 <TextField
                                     fullWidth
                                     name="userName"
-                                    label="userName"
+                                    label="UserName"
                                     type="text"
                                     id="userName"
                                     autoComplete="new-userName"
@@ -97,6 +99,7 @@ const SignUp = () => {
                                     id="email"
                                     label="Email Address"
                                     name="email"
+                                    type="email"
                                     autoComplete="email"
                                 />
                             </Grid>
@@ -144,8 +147,8 @@ const SignUp = () => {
                         </Button>
                         <Grid container justifyContent="flex-end">
                             <Grid item>
-                                <Link to="/login" variant="body2">
-                                    Already have an account? Sign in
+                                <Link component={RouterLink} underline='hover' color='inheirt' to="/login">
+                                    {"Already have an account? Sign in"}
                                 </Link>
                             </Grid>
                         </Grid>
