@@ -27,7 +27,7 @@ const AddEmployee = () => {
                 setErrors({ ...formErrors });
                 return;
             }
-            const { data, error } = await postData(`https://employee-registry.onrender.com/users`, {
+            const { data, error } = await postData('/users', {
                 users: [getFormData(formData, EmployeeFields)]
             });
             if (error) {

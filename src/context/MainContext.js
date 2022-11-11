@@ -44,7 +44,7 @@ const MainContextProvider = ({ children }) => {
     const getEmployee = async () => {
       if(!isAuthenticated) return ;
       try {
-          const { data } = await axios.get(`https://employee-registry.onrender.com/users`,
+          const { data } = await axios.get(`/users`,
           {
               headers: { 'Authorization': `${localStorage.getItem("token")}` }
           }
