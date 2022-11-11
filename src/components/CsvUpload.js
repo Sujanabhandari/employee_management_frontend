@@ -81,7 +81,7 @@ function CsvUpload() {
             if (error) {
                 throw new Error(error.response?.data.error || error.message);
             }
-            setEmployees((prev) => [...prev, ...data]);
+            setEmployees((prev) => [...data, ...prev]);
             toast.success()
             navigate('/', { replace: true });
         } catch (error) {
@@ -111,7 +111,7 @@ function CsvUpload() {
                     </Button>
                 </Grid>
                 <Grid item xs={12} sm={3}>
-                    <Button variant="contained" onClick={addEmployees}>
+                    <Button variant="contained" color="secondary" fullWidth onClick={addEmployees}>
                         Add Employees
                     </Button>
                 </Grid>
