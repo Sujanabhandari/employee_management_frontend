@@ -25,6 +25,7 @@ const CommentDisplay = ({ comment }) => {
                         secondary={
                             <React.Fragment>
                                 <Typography
+                                    style={{ whiteSpace: "pre-line"}}
                                     variant="body2"
                                     color="text.primary"
                                     noWrap    

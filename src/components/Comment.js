@@ -32,6 +32,8 @@ const Comment = ({ employeeId, setComments, comments }) => {
       console.log(error);
     }
   };
+
+
   return (
     <>
       <Grid component="form" onSubmit={handleSubmit}>
@@ -44,8 +46,8 @@ const Comment = ({ employeeId, setComments, comments }) => {
           name="message"
           value={text ? text : ""}
           onChange={(e)=>setText(e.target.value)}
-          style={{ width: "100%" }} />
-          
+          style={{ width: "100%" }} 
+          />
           <Button sx={{ ml: 'auto' }} type="submit" variant="contained" color="secondary">Comment</Button>  
       
       </Grid>
