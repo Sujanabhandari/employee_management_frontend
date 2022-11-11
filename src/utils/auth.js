@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = "http://localhost:3000";
+const baseUrl = "https://employee-registry.onrender.com/";
 
 const register = async (userData) => {
   const response = await axios.post(`${baseUrl}/signup`, userData);
@@ -25,7 +25,7 @@ const putData = async (url, userData) => {
 const deleteEmployee = async (id) => {
   try {
       const response = await axios.delete(
-          `http://localhost:3000/users/${id}`,
+          `https://employee-registry.onrender.com/users/${id}`,
           {
               headers: { 'Authorization': `${localStorage.getItem("token")}` }
           }

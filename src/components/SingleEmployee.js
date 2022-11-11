@@ -20,7 +20,7 @@ function SingleEmployee() {
     useEffect(() => {
         const getComments = async () => {
             try {
-                const { data } = await getData(`http://localhost:3000/comments?employeeId=${id}`);
+                const { data } = await getData(`https://employee-registry.onrender.com/comments?employeeId=${id}`);
                 setComments(data);
             } catch (error) {
                 console.log(error);

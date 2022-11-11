@@ -38,7 +38,7 @@ const EditEmployee = ({ employee, show, onHide }) => {
                 setErrors({ ...formErrors });
                 return;
             }
-            const response = await putData(`http://localhost:3000/users/${employee._id}`, getFormData(formData, EmployeeFields));
+            const response = await putData(`https://employee-registry.onrender.com/${employee._id}`, getFormData(formData, EmployeeFields));
             setEmployees(current => current.map(emp => emp._id === employee._id ? { ...emp, ...response.data } : emp));
             toast.success("Employee is succesfully edited")
             setErrors(false);

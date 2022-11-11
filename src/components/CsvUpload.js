@@ -74,7 +74,7 @@ function CsvUpload() {
     const addEmployees = async (e) => {
         try {
             e.preventDefault();
-            const { data, error } = await postData(`http://localhost:3000/users`, {
+            const { data, error } = await postData(`https://employee-registry.onrender.com/users`, {
                 users: [...array]
             });
 
