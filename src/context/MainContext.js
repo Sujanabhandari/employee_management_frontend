@@ -33,7 +33,7 @@ const MainContextProvider = ({ children }) => {
         setUser(data);
         setIsAuthenticated(true);
       } catch (error) {  
-        console.log(error)
+        console.log(error);
       }
     };
     token && validateToken();
@@ -52,7 +52,7 @@ const MainContextProvider = ({ children }) => {
       );;
           setEmployees(data);
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     };
     getEmployee();

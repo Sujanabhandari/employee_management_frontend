@@ -43,7 +43,6 @@ export default function SignIn() {
       navigate('/', { replace: true });
 
     } catch (error) {
-      console.log("From Error", error);
       toast.error(error.message);
     }
   };

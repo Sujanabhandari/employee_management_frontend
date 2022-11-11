@@ -14,8 +14,6 @@ const Comment = ({ employeeId, setComments, comments }) => {
   const { user } = useMainContext();
   const [text , setText] = useState("")
 
-  console.log(user._id);
-
   const handleSubmit = async (e) => {
     try {
       e.preventDefault();
@@ -26,7 +24,6 @@ const Comment = ({ employeeId, setComments, comments }) => {
         authorId: user._id,
       }
       );
-      console.log()
       setComments((prev) => [response.data, ...prev]);
       toast.success("Comment is saved.")
       setText("");

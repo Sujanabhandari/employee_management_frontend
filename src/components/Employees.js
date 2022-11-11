@@ -14,7 +14,7 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { toast } from "react-toastify";
 
 function Employee() {
-    const { employees, setEmployees } = useMainContext();
+    const { user, employees, setEmployees } = useMainContext();
     const [modalShow, setModalShow] = useState(false);
     const [currentEmployee, setCurrentEmployee] = useState({});
 
@@ -69,10 +69,19 @@ function Employee() {
             filterable: false,
             renderCell: (params) => {
                 const deleteClick = async (e) => {
+                    e.preventDefault();
                     const currentRow = params.row;
-                    const deleteRow = await deleteEmployee(e, currentRow._id);
+                    if (currentRow._id === user._id) {
+                        toast.warning('You cannot delete yourself');
+                        return;
+                    }
+                    const { error } = await deleteEmployee(currentRow._id);
+                    if (error) {
+                        toast.error('Employee could not be deleted');
+                        return;
+                    }
                     setEmployees(current => current.filter(emp => emp._id !== currentRow._id));
-                    toast.success(`Employee is deleted`)
+                    toast.success('Employee deleted successfully');
                 };
 
                 return (
@@ -101,7 +110,7 @@ function Employee() {
     ];
     return (
         <>
-            <Box mt={4} sx={{ height: 800, width: '100%' }}>
+            <Box mt={4} sx={{ height: 600, width: '100%' }}>
                 <Typography align="center" variant="h5" mb={3}>Employees Information</Typography>
                 <DataGrid
                     rows={employees}

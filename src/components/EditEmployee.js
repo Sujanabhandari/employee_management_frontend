@@ -40,7 +40,7 @@ const EditEmployee = ({ employee, show, onHide }) => {
             setEmployees(current => current.map(emp => emp._id === employee._id ? {...emp, ...response.data} : emp));
             onHide();
         } catch (error) {
-            console.log(error)
+            console.log(error);
         }
     };
 
