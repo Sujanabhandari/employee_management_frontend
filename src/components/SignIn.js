@@ -24,7 +24,10 @@ export default function SignIn() {
     event.preventDefault();
     try {
       const formData = new FormData(event.currentTarget);
-      if (!formData.get('email') || !formData.get('email')) alert("Please fill out all the fields");
+      if (!formData.get('email') || !formData.get('email')) {
+        toast.warn("Please fill out all the fields");
+        return;
+      }
       const { data, error } = await loginUser({ email: formData.get('email'), password: formData.get('password') });
 
       if (error) {
@@ -59,7 +62,7 @@ export default function SignIn() {
           alignItems: 'center',
         }}
       >
-        <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
+        <Box component="form" onSubmit={handleSubmit} sx={{ mt: 1 }}>
           <TextField
             margin="normal"
             required
