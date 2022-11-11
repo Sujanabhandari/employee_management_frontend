@@ -36,8 +36,6 @@ const deleteEmployee = async (id) => {
   }
 };
 
-
-
 const getData = async (url) => {
   const response = await axios.get(`${baseUrl}${url}`, {
     headers: { Authorization: localStorage.getItem("token") }

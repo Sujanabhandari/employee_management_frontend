@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { createContext, useState, useContext } from "react";
-import axios from 'axios';
 import {
+  getData,
   getUserContext,
 } from "../utils/auth";
 
@@ -44,11 +44,7 @@ const MainContextProvider = ({ children }) => {
     const getEmployee = async () => {
       if(!isAuthenticated) return ;
       try {
-          const { data } = await axios.get(`/users`,
-          {
-              headers: { 'Authorization': `${localStorage.getItem("token")}` }
-          }
-      );;
+          const { data } = await getData(`/users`);
           setEmployees(data);
       } catch (error) {
         console.log(error);
