@@ -118,7 +118,7 @@ const EditEmployee = ({ employee, show, onHide }) => {
                                 variant="standard" />
                         </Grid>
                         <Grid item xs={12}>
-                            <Button variant="contained" type="submit">Save</Button>
+                            <Button fullWidth variant="contained" type="submit" color="secondary">Save</Button>
                         </Grid>
                     </Grid>
                 </Box>
