@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import Button from '@mui/material/Button';
-import { useLocation, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useMainContext } from "../context/MainContext";
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
@@ -85,23 +85,18 @@ function Employee() {
                 };
 
                 return (
-                    <Stack direction="row" spacing={1}>
-                        <Button color="primary" size="small"
-                            onClick={() => {
-                                setCurrentEmployee(params.row);
-                                setModalShow(true);
-                            }} >
-                            <EditIcon color="secondary" fontSize="large"
-                            /> </Button>
-                        <Button color="primary" size="small" onClick={() => {
-
-                        }}><Link to={`/employee/${params.row._id}`}>
-                                <AccountBoxIcon color="secondary" fontSize="large"
-                                />
-                            </Link></Button>
-                        <Button color="error" size="small" onClick={deleteClick}>
-                            <DeleteIcon fontSize="large"
-                            />
+                    <Stack direction="row">
+                        <Button onClick={() => {
+                            setCurrentEmployee(params.row);
+                            setModalShow(true);
+                        }} >
+                            <EditIcon color="action" fontSize="medium" />
+                        </Button>
+                        <Button component={Link} to={`/employee/${params.row._id}`}>
+                            <AccountBoxIcon color="action" fontSize="medium" />
+                        </Button>
+                        <Button onClick={deleteClick}>
+                            <DeleteIcon color="action" fontSize="medium" />
                         </Button>
                     </Stack>
                 );

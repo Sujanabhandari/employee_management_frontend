@@ -4,6 +4,7 @@ import SignUp from './components/Register';
 import SignIn from './components/SignIn';
 import Home from './components/Home';
 import GlobalLayout from './components/GlobalLayout';
+import ProtectedLayout from './components/ProtectedRoute';
 import { useMainContext } from './context/MainContext';
 import Navbar from './components/Navbar'
 import { useNavigate } from "react-router-dom";
@@ -37,13 +38,48 @@ function App() {
         setToken={setToken} logout={logout} />
       <Routes>
         <Route path="/" element={<GlobalLayout />} >
-          <Route index element={ isAuthenticated ? <Home /> : <Navigate to='/login' />} />
-          <Route path="/employee/:id" element={<SingleEmployee />} />
-          <Route path="/editemployee" element={<EditEmployee/>} />
-          <Route path="/addEmployee" element={<AddEmployee />} />
+          <Route
+            index
+            element={
+              <ProtectedLayout isAuthenticated={isAuthenticated}>
+                <Home />
+              </ProtectedLayout> 
+            }
+          />
+          <Route
+            path="/employee/:id"
+            element={
+              <ProtectedLayout isAuthenticated={isAuthenticated}>
+                <SingleEmployee />
+              </ProtectedLayout> 
+            }
+          />
+          <Route
+            path="/editemployee"
+            element={
+              <ProtectedLayout isAuthenticated={isAuthenticated}>
+                <EditEmployee />
+              </ProtectedLayout> 
+            }
+          />
+          <Route
+            path="/addEmployee"
+            element={
+              <ProtectedLayout isAuthenticated={isAuthenticated}>
+                <AddEmployee />
+              </ProtectedLayout> 
+            }
+          />
+          <Route
+            path="/upload"
+            element={
+              <ProtectedLayout isAuthenticated={isAuthenticated}>
+                <CsvUpload />
+              </ProtectedLayout> 
+            }
+          />
           <Route path="/login" element={<SignIn />} />
           <Route index path="/register" element={<SignUp />} />
-          <Route index path="/upload" element={<CsvUpload />} />
         </Route>
       </Routes>
     </ThemeProvider>
