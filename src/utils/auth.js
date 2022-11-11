@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const baseUrl = "https://employee-registry.onrender.com/";
+const baseUrl = process.env.REACT_APP_SERVER_BASE_URL;
 
 const register = async (userData) => {
   const response = await axios.post(`${baseUrl}/signup`, userData);
@@ -8,7 +8,7 @@ const register = async (userData) => {
 };
 
 const postData = async (url, userData) => {
-  const response = await axios.post(url, userData , {
+  const response = await axios.post(`${baseUrl}${url}`, userData , {
     headers: { Authorization: localStorage.getItem("token") }
   });
 
@@ -16,7 +16,7 @@ const postData = async (url, userData) => {
 };
 
 const putData = async (url, userData) => {
-  const response = await axios.put(url, userData , {
+  const response = await axios.put(`${baseUrl}${url}`, userData , {
     headers: { Authorization: localStorage.getItem("token") }
   });
   return response;
@@ -25,7 +25,7 @@ const putData = async (url, userData) => {
 const deleteEmployee = async (id) => {
   try {
       const response = await axios.delete(
-          `https://employee-registry.onrender.com/users/${id}`,
+          `${baseUrl}/users/${id}`,
           {
               headers: { 'Authorization': `${localStorage.getItem("token")}` }
           }
@@ -39,7 +39,7 @@ const deleteEmployee = async (id) => {
 
 
 const getData = async (url) => {
-  const response = await axios.get(url , {
+  const response = await axios.get(`${baseUrl}${url}`, {
     headers: { Authorization: localStorage.getItem("token") }
   });
 
@@ -70,6 +70,7 @@ const getUserContext = async (token) => {
 };
 
 export {
+  baseUrl,
   register,
   loginUser,
   getUserContext,
