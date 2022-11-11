@@ -13,7 +13,7 @@ import { validateForm } from "../utils/validation";
 const AddEmployee = () => {
     const navigate = useNavigate();
     const { setEmployees } = useMainContext();
-    const [ errors, setErrors ] = useState({
+    const [errors, setErrors] = useState({
         email: false
     });
 
@@ -23,10 +23,10 @@ const AddEmployee = () => {
             const formData = new FormData(e.currentTarget);
             const formErrors = validateForm(formData);
             if (Object.values(formErrors).some(f => f === true)) {
-                setErrors({...formErrors});
+                setErrors({ ...formErrors });
                 return;
             }
-            const {data, error} = await postData(`http://localhost:3000/users`, {
+            const { data, error } = await postData(`http://localhost:3000/users`, {
                 users: [{
                     firstName: formData.get('firstName'),
                     lastName: formData.get('lastName'),
@@ -43,8 +43,8 @@ const AddEmployee = () => {
             });
             if (error) {
                 throw new Error(error.response?.data.error || error.message);
-              }
-            setEmployees((prev) => [...prev, ...data]);
+            }
+            setEmployees((prev) => [...data, ...prev]);
             navigate('/');
 
         } catch (error) {
@@ -53,7 +53,7 @@ const AddEmployee = () => {
     };
 
     return (
-        <Container maxWidth="sm" m="5" sx={{marginTop:"100px"}}>
+        <Container maxWidth="sm" m="5" sx={{ mt: 4 }}>
             <Typography variant="h6" gutterBottom>
                 Add new Employee
             </Typography>
@@ -144,7 +144,7 @@ const AddEmployee = () => {
                         autoComplete="country"
                         variant="standard" />
                 </Grid>
-                
+
                 <Grid item xs={12}>
                     <TextField
                         id="role"
