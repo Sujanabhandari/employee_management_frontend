@@ -22,6 +22,22 @@ const putData = async (url, userData) => {
   return response;
 };
 
+const deleteEmployee = async (id) => {
+  try {
+      const response = await axios.delete(
+          `http://localhost:3000/users/${id}`,
+          {
+              headers: { 'Authorization': `${localStorage.getItem("token")}` }
+          }
+      );
+      return response;
+  } catch (error) {
+      console.log(error);
+  }
+};
+
+
+
 const getData = async (url) => {
   const response = await axios.get(url , {
     headers: { Authorization: localStorage.getItem("token") }
@@ -53,28 +69,12 @@ const getUserContext = async (token) => {
   }
 };
 
-
-const saveToLocalStorage = (token) => {
-  localStorage.setItem('token', token);
-};
-
-const getFromLocalStorage = () => {
-  const token = localStorage.getItem('token');
-  return token || null;
-};
-
-const removeFromLocalStorage = () => {
-  localStorage.removeItem('token');
-};
-
 export {
   register,
   loginUser,
   getUserContext,
-  getFromLocalStorage,
-  saveToLocalStorage,
-  removeFromLocalStorage,
   postData,
   putData,
-  getData
+  getData,
+  deleteEmployee
 };

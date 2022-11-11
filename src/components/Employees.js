@@ -5,13 +5,13 @@ import { useMainContext } from "../context/MainContext";
 import Box from '@mui/material/Box';
 import { DataGrid } from '@mui/x-data-grid';
 import { Stack } from "@mui/system";
-import { deleteEmployee } from "../utils/deleteEmployee";
 import EditEmployee from "./EditEmployee";
 import { Typography } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import { toast } from "react-toastify";
+import { deleteEmployee } from "../utils/auth";
 
 function Employee() {
     const { user, employees, setEmployees } = useMainContext();
@@ -50,7 +50,7 @@ function Employee() {
             width: 135
         },
         {
-            field: 'address',
+            field: 'city',
             headerName: 'Address',
             filterable: false,
             width: 135
@@ -76,6 +76,7 @@ function Employee() {
                         return;
                     }
                     const { error } = await deleteEmployee(currentRow._id);
+
                     if (error) {
                         toast.error('Employee could not be deleted');
                         return;
@@ -112,7 +113,7 @@ function Employee() {
                     columns={columns}
                     pageSize={10}
                     getRowId={(row, index) => row._id}
-                    rowsPerPageOptions={[20, 40, 80]}
+                    rowsPerPageOptions={[10, 20, 30]}
                     experimentalFeatures={{ newEditingApi: true }}
                     disableColumnFilter
                 />

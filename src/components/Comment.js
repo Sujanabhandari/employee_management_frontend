@@ -3,7 +3,6 @@ import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import { postData } from '../utils/auth';
 import { useMainContext } from "../context/MainContext";
-// import { useMainContext } from '../context/MainContext';
 import CommentDisplay from './CommentDisplay';
 import { TextareaAutosize } from '@mui/material';
 import Typography from '@mui/material/Typography';
@@ -32,8 +31,6 @@ const Comment = ({ employeeId, setComments, comments }) => {
       console.log(error);
     }
   };
-
-
   return (
     <>
       <Grid component="form" onSubmit={handleSubmit}>

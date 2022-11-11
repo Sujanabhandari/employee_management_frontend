@@ -1,13 +1,15 @@
 import Grid from '@mui/material/Grid';
-import TextField from '@mui/material/TextField';
-import { Button, Container } from '@mui/material';
-import React, { useState, useEffect } from "react";
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
-import axios from 'axios';
 import { putData } from '../utils/auth';
 import { useMainContext } from "../context/MainContext";
+import EmployeeForm from './EmployeeForm';
+import { toast } from 'react-toastify';
+import { getFormData } from '../utils/form';
+import { EmployeeFields } from '../model/employee';
+import { useState } from 'react';
+import { validateForm } from "../utils/validation";
 
 const style = {
     position: 'absolute',
@@ -23,21 +25,23 @@ const style = {
 
 const EditEmployee = ({ employee, show, onHide }) => {
     const { setEmployees } = useMainContext();
+    const [errors, setErrors] = useState({
+        email: false
+    });
+
     const handleSubmit = async (e) => {
         try {
             e.preventDefault();
             const formData = new FormData(e.currentTarget);
-            const changedEmployee = {
-                firstName: formData.get('firstName'),
-                lastName: formData.get('lastName'),
-                userName: formData.get('userName'),
-                email: formData.get('email'),
-                address: formData.get('address'),
-                role: formData.get('role'),
-                password: formData.get('password'),
-            };
-            const response = await putData(`http://localhost:3000/users/${employee._id}`, changedEmployee);
-            setEmployees(current => current.map(emp => emp._id === employee._id ? {...emp, ...response.data} : emp));
+            const formErrors = validateForm(formData);
+            if (Object.values(formErrors).some(f => f === true)) {
+                setErrors({ ...formErrors });
+                return;
+            }
+            const response = await putData(`http://localhost:3000/users/${employee._id}`, getFormData(formData, EmployeeFields));
+            setEmployees(current => current.map(emp => emp._id === employee._id ? { ...emp, ...response.data } : emp));
+            toast.success("Employee is succesfully edited")
+            setErrors(false);
             onHide();
         } catch (error) {
             console.log(error);
@@ -57,69 +61,7 @@ const EditEmployee = ({ employee, show, onHide }) => {
                         Edit Employee
                     </Typography>
                     <Grid container spacing={3} component="form" onSubmit={handleSubmit}>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                id="firstName"
-                                name="firstName"
-                                label="First name"
-                                defaultValue={employee.firstName}
-                                fullWidth
-                                autoComplete="given-name"
-                                variant="standard" />
-                        </Grid>
-                        <Grid item xs={12} sm={6}>
-                            <TextField
-                                id="lastName"
-                                name="lastName"
-                                label="Last name"
-                                defaultValue={employee.lastName}
-                                fullWidth
-                                autoComplete="family-name"
-                                variant="standard" />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                id="userName"
-                                name="userName"
-                                label="userName"
-                                defaultValue={employee.userName}
-                                fullWidth
-                                autoComplete="userName"
-                                variant="standard" />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                id="address"
-                                name="address"
-                                label="Address"
-                                defaultValue={employee.address}
-                                fullWidth
-                                autoComplete="address"
-                                variant="standard" />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                required
-                                id="email"
-                                name="email"
-                                label="Email"
-                                fullWidth
-                                defaultValue={employee.email}
-                                variant="standard" />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                id="role"
-                                name="role"
-                                label="Your role in Company"
-                                fullWidth
-                                autoComplete="Role"
-                                defaultValue={employee.role}
-                                variant="standard" />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button fullWidth variant="contained" type="submit" color="secondary">Save</Button>
-                        </Grid>
+                        <EmployeeForm employee={employee} errors={errors} action="Edit"/>
                     </Grid>
                 </Box>
             </Modal>

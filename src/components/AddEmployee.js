@@ -1,14 +1,15 @@
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import TextField from '@mui/material/TextField';
 import { Container } from '@mui/system';
-import { Button } from '@mui/material';
 import { useMainContext } from "../context/MainContext";
 import { postData } from "../utils/auth";
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { validateForm } from "../utils/validation";
+import EmployeeForm from './EmployeeForm';
+import { getFormData } from '../utils/form';
+import { EmployeeFields } from '../model/employee';
 
 const AddEmployee = () => {
     const navigate = useNavigate();
@@ -27,24 +28,13 @@ const AddEmployee = () => {
                 return;
             }
             const { data, error } = await postData(`http://localhost:3000/users`, {
-                users: [{
-                    firstName: formData.get('firstName'),
-                    lastName: formData.get('lastName'),
-                    username: formData.get('username'),
-                    email: formData.get('email'),
-                    address: formData.get('address'),
-                    role: formData.get('role'),
-                    street: formData.get('street'),
-                    city: formData.get('city'),
-                    country: formData.get('country'),
-                    housenumber: formData.get('housenumber'),
-                    postcode: formData.get('postcode'),
-                }]
+                users: [getFormData(formData, EmployeeFields)]
             });
             if (error) {
                 throw new Error(error.response?.data.error || error.message);
             }
             setEmployees((prev) => [...data, ...prev]);
+            toast.success("Employee is succesfully added")
             navigate('/');
 
         } catch (error) {
@@ -58,105 +48,7 @@ const AddEmployee = () => {
                 Add new Employee
             </Typography>
             <Grid container spacing={3} component="form" onSubmit={handleSubmit}>
-                <Grid item xs={12} sm={6}>
-                    <TextField
-                        required
-                        id="firstName"
-                        name="firstName"
-                        label="First name"
-                        fullWidth
-                        autoComplete="given-name"
-                        variant="standard"
-                        autoFocus />
-                </Grid>
-                <Grid item xs={12} sm={6}>
-                    <TextField
-                        required
-                        id="lastName"
-                        name="lastName"
-                        label="Last name"
-                        fullWidth
-                        autoComplete="family-name"
-                        variant="standard" />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        id="username"
-                        name="username"
-                        label="Username"
-                        fullWidth
-                        autoComplete="Username"
-                        variant="standard" />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        error={errors?.email}
-                        required
-                        id="email"
-                        name="email"
-                        label="Email"
-                        fullWidth
-                        type="email"
-                        variant="standard" />
-                </Grid>
-                <Grid item xs={12} sm={8}>
-                    <TextField
-                        id="street"
-                        name="street"
-                        label="Street"
-                        fullWidth
-                        variant="standard" />
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                    <TextField
-                        id="housenumber"
-                        name="number"
-                        label="House number"
-                        fullWidth
-                        autoComplete="family-name"
-                        variant="standard" />
-                </Grid>
-                <Grid item xs={12} sm={4}>
-                    <TextField
-                        id="postcode"
-                        name="postcode"
-                        label="Postcode"
-                        fullWidth
-                        variant="standard" />
-                </Grid>
-                <Grid item xs={12} sm={8}>
-                    <TextField
-                        required
-                        id="city"
-                        name="city"
-                        label="City"
-                        fullWidth
-                        autoComplete="city"
-                        variant="standard" />
-                </Grid>
-                <Grid item xs={12}>
-                    <TextField
-                        required
-                        id="country"
-                        name="country"
-                        label="Country"
-                        fullWidth
-                        autoComplete="country"
-                        variant="standard" />
-                </Grid>
-
-                <Grid item xs={12}>
-                    <TextField
-                        id="role"
-                        name="role"
-                        label="Your role in Company"
-                        fullWidth
-                        autoComplete="Role"
-                        variant="standard" />
-                </Grid>
-                <Grid item xs={12}>
-                    <Button type="submit" fullWidth variant="contained" color="secondary">Add</Button>
-                </Grid>
+                <EmployeeForm errors={errors} action="Add" />
             </Grid>
         </Container>
     );

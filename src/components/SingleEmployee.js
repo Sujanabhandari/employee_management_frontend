@@ -13,10 +13,10 @@ import { getData } from "../utils/auth";
 function SingleEmployee() {
     const { employees } = useMainContext();
     const [comments, setComments] = useState([]);
-
     const { id } = useParams();
     let filteredEmployees = employees?.filter((employee) => employee?._id == id);
     const employee = (filteredEmployees && filteredEmployees[0]) || {};
+
     useEffect(() => {
         const getComments = async () => {
             try {
@@ -31,12 +31,11 @@ function SingleEmployee() {
 
     return (
         <>
-
             <Container>
                 <Box sx={{ height: 650, width: '100%', marginTop: '100px' }}>
                     <Grid style={{ margin: 20 }}>
                         <Typography variant="h4">
-                          Employee Information
+                            Employee Information
                         </Typography>
                     </Grid>
 
@@ -57,14 +56,27 @@ function SingleEmployee() {
                                             Role: {employee?.role}
                                         </Grid>
                                         <Grid item xs={6}>
-                                            Address: {employee?.address}
-                                        </Grid>
-                                        <Grid item xs={6}>
-                                            Username:  {employee?.userName}
-                                        </Grid>
-                                        <Grid item xs={6}>
                                             Joined Date:
                                             {new Date(employee?.date).toLocaleDateString()}
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                            UserName:
+                                            {employee?.userName}
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                            Country: {employee?.country}
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                            City: {employee?.city}
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                        Street: {employee?.street}
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                            Postcode: {employee?.postcode}
+                                        </Grid>
+                                        <Grid item xs={6}>
+                                            House Number: {employee?.housenumber}
                                         </Grid>
                                     </Grid>
                                 </CardContent>

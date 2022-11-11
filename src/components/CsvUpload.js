@@ -82,7 +82,7 @@ function CsvUpload() {
                 throw new Error(error.response?.data.error || error.message);
             }
             setEmployees((prev) => [...data, ...prev]);
-            toast.success()
+            toast.success("Employees are succesfully imported")
             navigate('/', { replace: true });
         } catch (error) {
             toast.error(error.message);
@@ -95,7 +95,7 @@ function CsvUpload() {
                 Import Employees from CSV File
             </Typography>
             <Grid container component="form" spacing={2} sx={{ mt: 4 }}>
-                <Grid item xs={12} sm={6} >
+                <Grid item xs={12} sm={4} >
                     <Input
                         type={"file"}
                         id={"csvFileInput"}
@@ -104,13 +104,13 @@ function CsvUpload() {
                         inputRef={fileInput}
                     />
                 </Grid>
-                <Grid item xs={12} sm={3}>
+                <Grid item xs={12} sm={4}>
                     <Button color="error" size="small" onClick={() => { fileInput.current.value = ""; setArray([]) }}>
                         <DeleteIcon fontSize="medium"
                         />
                     </Button>
                 </Grid>
-                <Grid item xs={12} sm={3}>
+                <Grid item xs={12} sm={4}>
                     <Button variant="contained" color="secondary" fullWidth onClick={addEmployees}>
                         Add Employees
                     </Button>

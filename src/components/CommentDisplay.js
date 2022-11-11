@@ -1,6 +1,5 @@
 import React from "react";
-import ReactDOM from "react-dom";
-import { Grid, Paper, Divider } from "@mui/material";
+import { Divider } from "@mui/material";
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
@@ -26,7 +25,7 @@ const CommentDisplay = ({ comment }) => {
                             <React.Fragment>
                                 <Typography
                                     style={{ whiteSpace: "pre-line"}}
-                                    variant="body2"
+                                    variant="span"
                                     color="text.primary"
                                     noWrap    
                                 >

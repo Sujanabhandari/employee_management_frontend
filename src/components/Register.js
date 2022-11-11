@@ -17,7 +17,7 @@ import { validateForm } from "../utils/validation";
 const SignUp = () => {
     const { setToken } = useMainContext();
     const navigate = useNavigate();
-    const [ errors, setErrors ] = useState({
+    const [errors, setErrors] = useState({
         email: false
     });
 
@@ -27,7 +27,7 @@ const SignUp = () => {
             const formData = new FormData(e.currentTarget);
             const formErrors = validateForm(formData);
             if (Object.values(formErrors).some(f => f === true)) {
-                setErrors({...formErrors});
+                setErrors({ ...formErrors });
                 return;
             }
             const { data, error } = await register({
@@ -38,6 +38,11 @@ const SignUp = () => {
                 address: formData.get('address'),
                 role: formData.get('role'),
                 password: formData.get('password'),
+                street: formData.get('street'),
+                city: formData.get('city'),
+                country: formData.get('country'),
+                housenumber: formData.get('housenumber'),
+                postcode: formData.get('postcode'),
             });
             if (error) {
                 throw new Error(error.response?.data.error || error.message);
@@ -111,15 +116,48 @@ const SignUp = () => {
                                 type="email"
                             />
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                id="street"
+                                name="street"
+                                label="Street"
+                                fullWidth
+                                 />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                id="housenumber"
+                                name="number"
+                                label="House number"
+                                fullWidth
+                               
+                                 />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                            <TextField
+                                id="postcode"
+                                name="postcode"
+                                label="Postcode"
+                                fullWidth
+                                 />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
                             <TextField
                                 required
+                                id="city"
+                                name="city"
+                                label="City"
                                 fullWidth
-                                name="address"
-                                id="address"
-                                label="Address"
-                                type="text"
-                            />
+                               
+                                 />
+                        </Grid>
+                        <Grid item xs={12}>
+                            <TextField
+                                id="country"
+                                name="country"
+                                label="Country"
+                                fullWidth
+                                />
                         </Grid>
                         <Grid item xs={12}>
                             <TextField
