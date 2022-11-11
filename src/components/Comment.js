@@ -17,7 +17,7 @@ const Comment = ({ employeeId, setComments, comments }) => {
     try {
       e.preventDefault();
       const formData = new FormData(e.currentTarget);
-      const response = await postData('http://localhost:3000/comments', {
+      const response = await postData('https://employee-registry.onrender.com/comments', {
         message: formData.get('message'),
         employeeId: employeeId,
         authorId: user._id,
