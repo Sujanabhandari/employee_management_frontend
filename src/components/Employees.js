@@ -22,7 +22,7 @@ function Employee() {
         {
             field: 'sn',
             headerName: 'SN',
-            width: 90,
+            width: 50,
             filterable: false,
             renderCell: (params) => params.api.getRowIndex(params.row._id) + 1
         },
@@ -60,12 +60,12 @@ function Employee() {
             headerName: 'Role',
             filterable: false,
             type: 'number',
-            width: 135
+            width: 135,
         },
         {
             field: 'actions',
             headerName: 'Actions',
-            width: 400,
+            width: 200,
             filterable: false,
             renderCell: (params) => {
                 const deleteClick = async (e) => {

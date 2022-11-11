@@ -2,7 +2,7 @@ import { Container } from '@mui/system';
 import { useMainContext } from "../context/MainContext";
 import { postData } from "../utils/auth";
 import React, { useState, useEffect, useRef } from "react";
-import { Grid, Typography, Button, Input, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Alert, AlertTitle } from '@mui/material';
+import { Grid, Typography, Button, Input, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { toast } from "react-toastify";
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -31,11 +31,17 @@ const CSVHEADERMAP = {
     'rolle': 'role'
 }
 
+const REQUIREDFIELDS = [
+    'firstName',
+    'lastName'
+]
+
 function CsvUpload() {
     const [file, setFile] = useState(null);
     const [array, setArray] = useState([]);
     const { setEmployees } = useMainContext();
     const fileInput = useRef();
+    const navigate = useNavigate();
 
     const fileReader = new FileReader();
 
@@ -43,15 +49,17 @@ function CsvUpload() {
         e.preventDefault();
         setFile(e.target.files[0]);
     };
-    const navigate = useNavigate();
 
     useEffect(() => {
         if (file == null) return;
         if (file && file.type === "text/csv") {
             fileReader.onload = function (event) {
                 const text = event.target.result;
-                const { data, error } = csvFileToArray(text, CSVHEADERMAP);
-                if (error) return;
+                const { data, error } = csvFileToArray(text, CSVHEADERMAP, REQUIREDFIELDS);
+                if (error) {
+                    fileInput.current.value = "";
+                    return;
+                }
                 setArray(data);
             };
             fileReader.readAsText(file);
@@ -66,14 +74,15 @@ function CsvUpload() {
     const addEmployees = async (e) => {
         try {
             e.preventDefault();
-            const response = await postData(`http://localhost:3000/users`, {
+            const { data, error } = await postData(`http://localhost:3000/users`, {
                 users: [...array]
             });
 
-            if (response.error) {
-                throw new Error(response.error.response?.data.error || response.error.message);
+            if (error) {
+                throw new Error(error.response?.data.error || error.message);
             }
-            setEmployees((prev) => [...prev, ...response.data]);
+            setEmployees((prev) => [...prev, ...data]);
+            toast.success()
             navigate('/', { replace: true });
         } catch (error) {
             toast.error(error.message);
@@ -129,10 +138,7 @@ function CsvUpload() {
                     </TableBody>
                 </Table>
             </TableContainer>
-
-
         </Container>
-
     );
 }
 

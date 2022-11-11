@@ -1,6 +1,6 @@
 import { toast } from "react-toastify";
 
-export const csvFileToArray = (text, csvHeaderMap) => {
+export const csvFileToArray = (text, csvHeaderMap, requiredFields) => {
     const delimiter = new RegExp(/;|,/gis);
     const csvOriginalHeaders = text.slice(0, text.indexOf("\n")).split(delimiter);
     // Replace \r and whitespaces with ''
@@ -20,13 +20,24 @@ export const csvFileToArray = (text, csvHeaderMap) => {
         return {error: true};
     }
     const csvRows = text.slice(text.indexOf("\n") + 1).split("\n");
-    const data = csvRows.map(i => {
-        const values = i.split(delimiter);
+    let data = [];
+    let error = false;
+    csvRows.forEach(row => {
+        // Remove \r and whitespace
+        const trimmedRow = row.replace(/[\n\r]+/g, '').trim();
+        if (trimmedRow === '')
+            return;
+        const values = trimmedRow.split(delimiter);
         const obj = csvHeaders.reduce((object, header, index) => {
-            object[csvHeaderMap[header]] = values[index];
+            const fieldName = csvHeaderMap[header];
+            if (requiredFields.includes(fieldName) && !values[index]) {
+                toast.warn(`Value for ${fieldName} column is required.`);
+                error = true;
+            }
+            object[fieldName] = values[index].trim();
             return object;
         }, {});
-        return obj;
+        data.push({...obj});
     });
-    return {data};
+    return {data: data, error: error};
 }
