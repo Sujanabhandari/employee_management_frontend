@@ -69,7 +69,6 @@ function CsvUpload() {
             const response = await postData(`http://localhost:3000/users`, {
                 users: [...array]
             });
-            console.log("Response", response)
 
             if (response.error) {
                 throw new Error(response.error.response?.data.error || response.error.message);
@@ -78,7 +77,6 @@ function CsvUpload() {
             navigate('/', { replace: true });
         } catch (error) {
             toast.error(error.message);
-            console.log(error)
         }
     };
 

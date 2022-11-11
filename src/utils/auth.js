@@ -3,8 +3,6 @@ import axios from 'axios';
 const baseUrl = "http://localhost:3000";
 
 const register = async (userData) => {
-
-  console.log("From reagist", baseUrl)
   const response = await axios.post(`${baseUrl}/signup`, userData);
   return response;
 };

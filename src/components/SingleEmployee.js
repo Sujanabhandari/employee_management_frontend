@@ -23,7 +23,7 @@ function SingleEmployee() {
                 const { data } = await getData(`http://localhost:3000/comments?employeeId=${id}`);
                 setComments(data);
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         };
         getComments();
