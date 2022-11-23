@@ -11,6 +11,7 @@ const MainContextProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [employees, setEmployees] = useState([]);
+  const [prevEmployees, setPrevEmployees] = useState([]);
   const [user, setUser] = useState({
     firstName: "",
     lastName: "",
@@ -45,6 +46,7 @@ const MainContextProvider = ({ children }) => {
       if(!isAuthenticated) return ;
       try {
           const { data } = await getData(`/users`);
+          setPrevEmployees(data);
           setEmployees(data);
       } catch (error) {
         console.log(error);
@@ -63,7 +65,9 @@ const MainContextProvider = ({ children }) => {
         isAuthenticated,
         setIsAuthenticated,
         employees,
-        setEmployees
+        setEmployees,
+        prevEmployees,
+        setPrevEmployees
       }}
     >
       {children}
