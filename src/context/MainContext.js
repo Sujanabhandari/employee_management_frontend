@@ -12,6 +12,12 @@ const MainContextProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [employees, setEmployees] = useState([]);
   const [prevEmployees, setPrevEmployees] = useState([]);
+  
+  const [pageLimit, setPageLimit] = useState(10);
+  const [page, setPage] = useState(0);
+  const [pageSize, setPageSize] = useState(10);
+  const [rowCountState, setRowCountState] = useState(0);
+
   const [user, setUser] = useState({
     firstName: "",
     lastName: "",
@@ -40,20 +46,22 @@ const MainContextProvider = ({ children }) => {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [token]); 
 
-  
+  console.log("page", page)
   useEffect(() => {
     const getEmployee = async () => {
       if(!isAuthenticated) return ;
       try {
-          const { data } = await getData(`/users`);
-          setPrevEmployees(data);
-          setEmployees(data);
+          const { data } = await getData(`/users?page=${page+1}&limit=${pageSize}`);
+          console.log("Employee", data.hits);
+          setRowCountState(data.hits)
+          setPrevEmployees(data.results);
+          setEmployees(data.results);
       } catch (error) {
         console.log(error);
       }
     };
     getEmployee();
-  }, [isAuthenticated]);
+  }, [isAuthenticated, page, pageSize]);
 
 
   return (
@@ -67,7 +75,8 @@ const MainContextProvider = ({ children }) => {
         employees,
         setEmployees,
         prevEmployees,
-        setPrevEmployees
+        setPrevEmployees,
+       page, setPage, setPageLimit, setPageSize, rowCountState
       }}
     >
       {children}

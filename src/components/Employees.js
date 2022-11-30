@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Button from '@mui/material/Button';
+import Pagination from '@mui/material/Pagination';
 import { Link } from "react-router-dom";
 import { useMainContext } from "../context/MainContext";
 import Box from '@mui/material/Box';
@@ -14,18 +15,17 @@ import { toast } from "react-toastify";
 import { deleteEmployee } from "../utils/auth";
 
 function Employee() {
-    const { user, employees, setEmployees } = useMainContext();
+    const { user, employees, setEmployees, pageLimit, setPage, setPageSize, page, pageSize, rowCountState } = useMainContext();
     const [modalShow, setModalShow] = useState(false);
     const [currentEmployee, setCurrentEmployee] = useState({});
-
     const columns = [
-        {
-            field: 'sn',
-            headerName: 'SN',
-            width: 50,
-            filterable: false,
-            renderCell: (params) => params.api.getRowIndex(params.row._id) + 1
-        },
+        // {
+        //     field: 'sn',
+        //     headerName: 'SN',
+        //     width: 50,
+        //     filterable: false,
+        //     renderCell: (params) => params.api.getRowIndex(params.row._id) + 1
+        // },
         {
             field: 'firstName',
             headerName: 'First name',
@@ -104,16 +104,23 @@ function Employee() {
             },
         }
     ];
+    
     return (
         <>
             <Box mt={4} sx={{ height: 600, width: '100%' }}>
                 <Typography align="center" variant="h5" mb={3}>Employees Information</Typography>
                 <DataGrid
                     rows={employees}
+                    rowCount={rowCountState}
+                    rowsPerPageOptions={[5, 10, 20]}
+                    pagination
+                    pageSize={pageSize}
+                    autoPageSize
+                    page={page}
+                    paginationMode="server"
+                    onPageChange={(newPage) => setPage(newPage)}
                     columns={columns}
-                    pageSize={10}
                     getRowId={(row, index) => row._id}
-                    rowsPerPageOptions={[10, 20, 30]}
                     experimentalFeatures={{ newEditingApi: true }}
                     disableColumnFilter
                 />
