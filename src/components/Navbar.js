@@ -30,7 +30,7 @@ export default function Navbar({ logout }) {
   useEffect(() => {
     if (searchQuery) {
       console.log("Search Query", searchQuery)
-      const result = employees.filter(employee =>
+      const result = prevEmployees.filter(employee =>
         employee?.firstName?.toLowerCase().includes(searchQuery.toLowerCase()) || employee?.lastName?.toLowerCase().includes(searchQuery.toLowerCase())
         || employee?.userName?.toLowerCase().includes(searchQuery.toLowerCase()) || employee?.role?.toLowerCase().includes(searchQuery.toLowerCase())
       );
